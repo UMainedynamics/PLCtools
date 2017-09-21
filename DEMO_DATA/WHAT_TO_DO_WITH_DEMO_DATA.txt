@@ -1,0 +1,1 @@
+Stick these "Sawtooth_frequency" folders in your PLC "Auto Saves" directory and run PlotPLC.mlx
