@@ -1,0 +1,27 @@
+--- Power law creep analysis data for file Sawtooth_frequency_0,50.png     Created on 9/12 at 15h 39m 
+
+
+Number of elements in analysis mesh = 2066
+
+--- PHASE INFORMATION --- 
+
+  #         Name         Mode           Ad            n            Q
+
+  1         weak      96.4300   1.0000e-21       3.0000   0.0000e+00
+  2       strong       3.5700   1.0000e-19       3.0000   0.0000e+00
+ 
+
+--- MACROSCALE FIELD VARIABLES --- 
+
+                 Strain Rate          Stress     Max. Principal  Min. Principal     Max. Princ.     Min. Princ.    Differential                
+ Temperature       Invariant       Invariant    Stress(tensile)          Stress     Dev. Stress     Dev. Stress          Stress       Viscosity
+         773    6.450270e+08    5.000000e+09       5.000000e+09   -5.000000e+09    5.000000e+09   -5.000000e+09    1.000000e+10    3.875800e+00
+         773    1.114600e+09    6.000000e+09       6.000000e+09   -6.000000e+09    6.000000e+09   -6.000000e+09    1.200000e+10    2.691550e+00
+ 
+
+--- MICROSCALE FIELD VARIABLES --- 
+
+               Macro. Stress          Max. Micro.          Min. Micro.          Max. Micro.          Min. Micro.               Max. Micro.               Min. Micro.          Max. Micro.          Min. Micro.          Max. Micro.          Min. Micro.          Max. Micro.          Min. Micro.          Max. Micro.          Max. Micro.
+ Temperature       Invariant     Strain Rate Inv.     Strain Rate Inv.   Princ. Strain Rate   Princ. Strain Rate   Princ. Dev. Strain Rate   Princ. Dev. Strain Rate          Stress Inv.          Stress Inv.        Princ. Stress        Princ. Stress   Princ. Dev. Stress   Princ. Dev. Stress         Shear Stress            Viscosity
+         773    5.000000e+09         4.450470e+09         4.019720e+06         8.186207e+09        -8.187923e+09              8.186780e+09             -8.187350e+09         7.323510e+09         5.694810e+08         7.028402e+09        -7.618618e+09         7.323490e+09        -7.323530e+09         7.323510e+09         7.490410e+01
+         773    6.000000e+09         7.690350e+09         6.945960e+06         1.414571e+10        -1.414869e+10              1.414670e+10             -1.414770e+10         8.788210e+09         6.833770e+08         8.434070e+09        -9.142340e+09         8.788180e+09        -8.788230e+09         8.788210e+09         5.201720e+01
