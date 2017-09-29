@@ -22,6 +22,7 @@ classdef PLCobject
        gradient_sigma
        gradient_cutline
        matrix
+       grains
    end
    methods
        function obj = PLCobject(PLCvars,varargin)
@@ -136,22 +137,43 @@ classdef PLCobject
        % EXAMPLE 3: obj(i) = obj(i).CalculateGradient([0.5,0.5],1e-02)
        % EXAMPLE 4: obj(i) = obj(i).CalculateGradient([0.5,0.5],1e-02, 1)
 
-            if size(varargin,2) == 1
-                threshold = varargin{1}/100;
-                X = obj.parameter_index/max(obj.parameter_index(:));
-                X(isnan(X)) = 0;
-                X(X==Inf) = 0;
-                X(X==-Inf) = 0;
-                W = min(X(X>0));
-                X((X-W)>threshold) = 0;
-                maskedImage = X;
-                
-                % Determine which values fall outside of the grain boundary
+            if size(varargin,2) == 1 % If an argument is provided with cell
+                % values corresponding to grains which should be masked
+                % (presumably, all grains but matrix), subtract those
+                % grains from obj.matrix
+                msindex = varargin{1};
+                msfname = strcat(strjoin(obj.fname_components(1:end-3),...
+                    '_'),'.mat');
+                msload = load(msfname);
+                obj.grains = msload.ms.NumberGrains;
+                GrainPolyLinesCell = msload.ms.GrainPolylines;
+                GrainPolyLines = GrainPolyLinesCell{msindex{1,1},msindex{1,2}};
+                xv = GrainPolyLines(:,1);
+                yv = GrainPolyLines(:,2);
+                k = boundary(xv,yv,1);
+                [Y,X] = find(obj.parameter_index);
+                [in,on] = inpolygon(X,Y,xv(k),yv(k));
                 obj.matrix = obj.parameter_index;
-                obj.matrix(maskedImage>0) = NaN;
-                if sum(~isnan(obj.matrix)) < 1
-                    error('The current threshold value resulted in a null grain matrix')
-                end
+                obj.matrix(in) = NaN;
+                obj.matrix(on) = NaN;
+                obj.matrix(obj.matrix==Inf) = 0;
+                obj.matrix(obj.matrix==-Inf) = 0;
+                
+%                 threshold = varargin{1}/100;
+%                 X = obj.parameter_index/max(obj.parameter_index(:));
+%                 X(isnan(X)) = 0;
+%                 X(X==Inf) = 0;
+%                 X(X==-Inf) = 0;
+%                 W = min(X(X>0));
+%                 X((X-W)>threshold) = 0;
+%                 maskedImage = X;
+%                 
+%                 % Determine which values fall outside of the grain boundary
+%                 obj.matrix = obj.parameter_index;
+%                 obj.matrix(maskedImage>0) = NaN;
+%                 if sum(~isnan(obj.matrix)) < 1
+%                     error('The current threshold value resulted in a null grain matrix')
+%                 end
             end
 
             % Find the gradient of the matrix
@@ -215,6 +237,7 @@ classdef PLCobject
             legitimate_value = false;
             k = 1;
             while legitimate_value == false
+                sprintf('%s',k);
                 maxgrad = param_vec(k,1);
                 [maxgradrow,maxgradcol] = find(obj.gradient == maxgrad);
                 obj.vxcenter = maxgradcol;
