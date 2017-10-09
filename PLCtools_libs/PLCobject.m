@@ -23,6 +23,20 @@ classdef PLCobject
        gradient_cutline
        matrix
        grains
+       graincount
+       phases
+       phasescount
+       nullspace
+       nullpolygon
+       rownull
+       colnull
+       danger_row
+       danger_col
+       gl_row
+       gl_col
+       gradlinematrix
+       cx
+       cy
    end
    methods
        function obj = PLCobject(PLCvars,varargin)
@@ -99,6 +113,7 @@ classdef PLCobject
             max_param = max(obj.cutline);
             min_param = min(obj.cutline);
             param_x = char(obj.fname_components(varmag_comp));
+            param_x = strrep(param_x, ',', '.');
             max_less_min(1,1) = str2double(param_x(end-2:end));
             max_less_min(1,2) = max_param - min_param;
        end
@@ -130,32 +145,43 @@ classdef PLCobject
        % Calculate the gradient of the parameter of interest as defined
        % by the obj.parameter_index data. Expects a kernel value for the
        % calculation of the gradient as defined by Guanglei Xiong's
-       % gaussgradient function.
+       % gaussgradient function. Adding another argument allows masking of
+       % grains by phase number.
        %
        % EXAMPLE 1: obj(i) = obj(i).CalculateGradient
-       % EXAMPLE 2: obj(i) = obj(i).CalculateGradient([0.5,0.5])
-       % EXAMPLE 3: obj(i) = obj(i).CalculateGradient([0.5,0.5],1e-02)
-       % EXAMPLE 4: obj(i) = obj(i).CalculateGradient([0.5,0.5],1e-02, 1)
+       % EXAMPLE 2: obj(i) = obj(i).CalculateGradient(1)
+       % ---> this example explicitly defines the kernel value of 1
+       % EXAMPLE 3: obj(i) = obj(i).CalculateGradient(1,2)
+       % ---> this example masks the grains with a phase number of 2
 
             if size(varargin,2) == 1 % If an argument is provided with cell
-                % values corresponding to grains which should be masked
-                % (presumably, all grains but matrix), subtract those
-                % grains from obj.matrix
-                msindex = varargin{1};
+                % values corresponding to phases, subtract those phases
+                % from the area in which the gradient is calculated
+                msindex = varargin{1}; % phase to be excluded
                 msfname = strcat(strjoin(obj.fname_components(1:end-3),...
                     '_'),'.mat');
                 msload = load(msfname);
-                obj.grains = msload.ms.NumberGrains;
-                GrainPolyLinesCell = msload.ms.GrainPolylines;
-                GrainPolyLines = GrainPolyLinesCell{msindex{1,1},msindex{1,2}};
-                xv = GrainPolyLines(:,1);
-                yv = GrainPolyLines(:,2);
-                k = boundary(xv,yv,1);
-                [Y,X] = find(obj.parameter_index);
-                [in,on] = inpolygon(X,Y,xv(k),yv(k));
-                obj.matrix = obj.parameter_index;
-                obj.matrix(in) = NaN;
-                obj.matrix(on) = NaN;
+                obj.grains = msload.ms.Grains;
+                obj.phases = msload.ms.GrainPhases;
+                obj.graincount = size((obj.grains),2);
+                    % count the number of individual grains
+                obj.phasescount = size(unique(obj.phases),1);
+                    % count distinct phases are in the list of grains
+                [grainRow,~] = find(obj.phases==msindex);
+                for i = grainRow'
+                    target_grain = [obj.grains{1,i}];
+                    xv = target_grain(:,1);
+                    yv = target_grain(:,2);
+                    k = boundary(xv,yv,0.95);
+                    [Y,X] = find(obj.parameter_index);
+                    [in,on] = inpolygon(X,Y,xv(k),yv(k));
+                    obj.nullpolygon = [xv(k),yv(k)];
+                    obj.matrix = obj.parameter_index;
+                    obj.matrix(in) = NaN;
+                    obj.matrix(on) = NaN;
+                    obj.nullspace = isnan(obj.matrix)==1;
+                    [obj.rownull,obj.colnull] = find(obj.nullspace==1);
+                end
                 obj.matrix(obj.matrix==Inf) = 0;
                 obj.matrix(obj.matrix==-Inf) = 0;
                 
@@ -177,11 +203,13 @@ classdef PLCobject
             end
 
             % Find the gradient of the matrix
-            [gx,gy] = gaussgradient(obj.matrix,kernel_value);
+            [gx,gy] = gaussgradient(obj.parameter_index,kernel_value);
             obj.gradient = abs(gx+gy);
+            obj.gradient(isnan(obj.matrix)==1) = NaN;
+            
        end
        
-       function [gradline, gradlinesum, graddist, i_coords] = GradientLine(obj, cutlinelength)
+       function [gradline, gradlinerow, gradlinecol, gradlinesum, graddist, i_coords] = GradientLine(obj, cutlinelength)
           if nargin == 2
             cutlinelength = cutlinelength * (obj.total_size(1,2)-1);
             alpha = pi/144; % angle of rotation in radians
@@ -195,10 +223,10 @@ classdef PLCobject
             iy2 = zeros(2*pi/alpha,1);
                 for i = 1:(2*pi/alpha)
                     beta = i*alpha;
-                    x1 = (obj.vxcenter);
-                    x2 = (obj.vxcenter);
-                    y1 = (obj.vycenter + (cutlinelength/2));
-                    y2 = (obj.vycenter - (cutlinelength/2));
+                    x1 = obj.vxcenter;
+                    x2 = obj.vxcenter;
+                    y1 = obj.vycenter + (cutlinelength/2);
+                    y2 = obj.vycenter - (cutlinelength/2);
                     xcv = [x1,y1;...
                           x2,y2];
                     origin = [obj.vxcenter,obj.vycenter];
@@ -210,13 +238,23 @@ classdef PLCobject
                         ((xcv(2,2)-origin(1,2))*sin((i-1)*beta)))+origin(1,1);
                     iy2(i) = (((xcv(2,2)-origin(1,2))*cos((i-1)*beta)) + ...
                         ((xcv(2,1)-origin(1,1))*sin((i-1)*beta)))+origin(1,2);
+                    i_coords = [ix1, iy1, ix2, iy2];
+                    
                     graddist(i,1) = round(pdist([ix1(i),iy1(i);...
                         ix2(i),iy2(i)],'euclidean'));
-                    gradline(:,i) = smooth(improfile(obj.gradient,...
-                        [ix1(i),ix2(i)],[iy1(i),iy2(i)],graddist(i)+1,...
-                        'bilinear'),'moving'); % find the values along the
-                        % line of cross section
-                    i_coords = [ix1, iy1, ix2, iy2];
+                    
+                    [gradlinecol,gradlinerow,gradline(:,i)] = improfile(...
+                        obj.gradient,[ix1(i),ix2(i)],[iy1(i),iy2(i)],...
+                        graddist(i)+1,'bilinear'); % find the values along 
+                        % the line of cross section
+                    gradline(:,i) = smooth(gradline(:,i),'moving');
+                    nullcheck_row = ismember(obj.rownull,gradlinerow);
+                    nullcheck_col = ismember(obj.colnull,gradlinecol);
+                    nullcheck = nullcheck_row & nullcheck_col;
+                    if any(nullcheck == 1) % if the gradient line crosses
+                        % a nulled grain, null the gradient line
+                        gradline(:,i) = NaN;
+                    end
                     if any(isnan(gradline(:,i))) == 1
                         gradline(:,i) = NaN;
                     end
@@ -242,15 +280,18 @@ classdef PLCobject
                 [maxgradrow,maxgradcol] = find(obj.gradient == maxgrad);
                 obj.vxcenter = maxgradcol;
                 obj.vycenter = maxgradrow;
-                [gradline, gradlinesum, graddist, i_coords] = obj.GradientLine(cutlinelength);
+                [gradline, gradlinecol, gradlinerow, gradlinesum, graddist, i_coords] = obj.GradientLine(cutlinelength);
                 [~,col] = find(gradlinesum == max(gradlinesum));
                 obj.gradient_cutline = gradline(:,col);
+                obj.gl_col = gradlinecol;
+                obj.gl_row = gradlinerow;
                 if isempty(obj.gradient_cutline) == 0
-                    if k > 10
+                    if k > 30
                         sprintf('%s','WARNING: ',num2str(k-1),...
                             ' cut lines had to be discarded for object ',...
                             obj.fname_components{obj.varmag_component},...
-                            '. Consider using a larger threshold value.')
+                            '. This could be due to a complicated ',...
+                            'geometry, or a large cut line length.')
                     end
                     legitimate_value = true;
                 else

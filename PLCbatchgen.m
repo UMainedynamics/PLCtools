@@ -7,9 +7,9 @@
 %% SETUP
 
 picspath = fullfile(userpath,'PLCToolboxV06_64bit',...
-    'Custom and Batch Analyses','Sawtooth','Frequency'); 
+    'Custom and Batch Analyses','Sawtooth','Basis'); 
     % use pwd for current directory
-project_basename = 'Sawtooth_frequency'; % basename for pictures
+project_basename = 'SawtoothBASE_frequency'; % basename for pictures
 load_type = 'stress'; % either 'stress' or 'strain rate'
 phase_names = {'weak','strong'};
 Ad = {1e-21,1e-19};
