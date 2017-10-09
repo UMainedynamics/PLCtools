@@ -1,1 +1,2 @@
-Stick these "Sawtooth_frequency" folders in your PLC "Auto Saves" directory and run PlotPLC.mlx
+Stick these "Sawtooth_frequency" folders in your PLC "Auto Saves" directory and run PlotPLC.mlx.
+Make sure that the "lib" directory is in your MATLAB path.
