@@ -44,7 +44,6 @@ classdef PLCobject
        locb_coords
        lower_plot_bound
        upper_plot_bound
-       gradline_coords_round
    end
    methods
        function obj = PLCobject(PLCvars,varargin)
@@ -322,7 +321,7 @@ classdef PLCobject
        end
        
        
-       function obj = MaskPhases(obj, msindex, cutlinelength)
+       function obj = MaskPhases(obj, msindex)
        % EXAMPLE: obj(i) = obj(i).MaskPhases(2)
        % ---> this example masks the grains with a phase number of 2
        
@@ -350,6 +349,7 @@ classdef PLCobject
             obj.matrix = obj.parameter_index;
             obj.matrix(in) = NaN;
             obj.matrix(on) = NaN;
+            
         end
         obj.nullspace = isnan(obj.matrix)==1;
         obj.nullspace = obj.nullspace(...
@@ -361,7 +361,6 @@ classdef PLCobject
         obj.matrix(obj.matrix==Inf) = 0;
         obj.matrix(obj.matrix==-Inf) = 0;
         obj.gradient(isnan(obj.matrix)==1) = NaN;
-        obj.CutLineMaxGradient(cutlinelength);
         obj.gradline_row_round = round(obj.gradline_row);
         obj.gradline_col_round = round(obj.gradline_col);
         obj.gradline_coords_round = [obj.gradline_row_round,obj.gradline_col_round];
@@ -376,10 +375,9 @@ classdef PLCobject
 %            obj.nullcheck = obj.locb_row & obj.locb_col;
 %            obj.nullcheck = obj.nullcheck_row & obj.nullcheck_col;
         
-        [obj.nullcheck,obj.locb_coords] = ismember(obj.gradline_coords_round,null_coords,'rows');
-%         obj.nullcheck = ismember(obj.gradline_coords_round,obj.locb_coords);
-         obj.gradient_cutline(obj.nullcheck==1) = NaN; % if the gradient 
-         
+        [~,obj.locb_coords] = ismember(obj.gradline_coords_round,null_coords);
+        obj.nullcheck = ismember(obj.gradline_coords_round,obj.locb_coords);
+%         obj.gradient_cutline(obj.nullcheck==1) = 0; % if the gradient 
                % line crosses a nulled grain, null that portion of the gradient line
 %            if any(isnan(obj.gradient_cutline) == 1)
 %                obj.gradient_cutline(obj.nullcheck==1) = NaN;

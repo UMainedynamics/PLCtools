@@ -1,11 +1,15 @@
 function subhandle = PLCsubplot(fighandle,m,n,p,plcobj,params)
 % Plots graph and sets up a custom data tip update function
 % for a subplot (either horizontal or vertical) with two components
+[row,col] = find(isnan(param)==0);
+lower_bound = max(min(col),min(row));
+upper_bound = min(max(col),max(row));
+plot_area = params(lower_bound:upper_bound,lower_bound:upper_bound);
+plothandle = imagesc(plot_area);
+
 subhandle(p) = subplot(m,n,p);
-parameter = params{1,p};
-imagesc(parameter(...
-    plcobj.lower_plot_bound:plcobj.upper_plot_bound,...
-    plcobj.lower_plot_bound:plcobj.upper_plot_bound));
+plot_area = params{1,p};
+imagesc(plot_area);
 dcm_obj = datacursormode(fighandle);
 set(dcm_obj,'UpdateFcn',{@SubPlotDataCursorText,plcobj,subhandle(p),p,params})
 end
