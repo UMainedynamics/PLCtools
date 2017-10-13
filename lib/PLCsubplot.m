@@ -3,9 +3,7 @@ function subhandle = PLCsubplot(fighandle,m,n,p,plcobj,params)
 % for a subplot (either horizontal or vertical) with two components
 subhandle(p) = subplot(m,n,p);
 parameter = params{1,p};
-imagesc(parameter(...
-    plcobj.lower_plot_bound:plcobj.upper_plot_bound,...
-    plcobj.lower_plot_bound:plcobj.upper_plot_bound));
+imagesc(parameter);
 dcm_obj = datacursormode(fighandle);
 set(dcm_obj,'UpdateFcn',{@SubPlotDataCursorText,plcobj,subhandle(p),p,params})
 end
@@ -24,5 +22,5 @@ end
 txt = {...
     ['X: ',num2str(round(pos(1))/obj_size_x)],...
     ['Y: ',num2str(1-(round(pos(2))/obj_size_y))],...
-    ['Value: ',sprintf('%.2e',parameter(pos(1),pos(2)))]};
+    ['Value: ',sprintf('%.2e',parameter(pos(2),pos(1)))]};
 end
