@@ -19,7 +19,9 @@ classdef PLCobject
        cut_line_v1
        cut_line_v2
        cutlinelength
-       gradient
+       parameter_gradient
+       grad_x
+       grad_y
        gradient_sigma
        gradient_cutline
        matrix
@@ -88,7 +90,8 @@ classdef PLCobject
                 obj.lower_plot_bound:obj.upper_plot_bound);
        end
        
-       function obj = CalculateGradient(obj, kernel_value, cutlinelength, varargin)
+       
+       function obj = CalculateGradient(obj, cutlinelength, varargin)
        % Calculate the gradient of the parameter of interest as defined
        % by the obj.parameter_index data. Expects a kernel value for the
        % calculation of the gradient as defined by Guanglei Xiong's
@@ -100,15 +103,18 @@ classdef PLCobject
        % ---> this example explicitly defines the kernel value of 1
        % EXAMPLE 3: obj(i) = obj(i).CalculateGradient(1,2)
        % ---> this example masks the grains with a phase number of 2
-            [gx,gy] = gaussgradient(obj.parameter_index,kernel_value);
-            obj.gradient = abs(gx+gy);
+            obj.cutlinelength = cutlinelength * (obj.total_size(1,2)-1);
+            [obj.grad_x,obj.grad_y] = gradient(obj.parameter_index,1);
+            obj.parameter_gradient = sqrt((obj.grad_x).^2+(obj.grad_y).^2);
+            
             if size(varargin,2) == 1
                 obj.phasesnulled = varargin{1};
                 obj = obj.MaskPhases;
             end
-            obj.max_gradient = max(obj.gradient(:));
-            obj.cutlinelength = cutlinelength * (obj.total_size(1,2)-1);
+            
+            obj.max_gradient = max(obj.parameter_gradient(:));
        end
+       
        
        function [gradline, gradlinerow, gradlinecol, gradlinesum, graddist, i_coords] = GradientLineRotation(obj)
             alpha = pi/144; % angle of rotation in radians (pi/144 is default)
@@ -147,22 +153,12 @@ classdef PLCobject
                         ix2(i),iy2(i)],'euclidean'));
                     
                     [gradlinecol(:,i),gradlinerow(:,i),gradline(:,i)] = improfile(...
-                        obj.gradient,[ix1(i),ix2(i)],[iy1(i),iy2(i)],...
+                        obj.parameter_gradient,[ix1(i),ix2(i)],[iy1(i),iy2(i)],...
                         graddist(i)+1,'bilinear'); % find the values along 
                         % the line of cross section
                     gradline(:,i) = smooth(gradline(:,i),'moving');
-                    gradlinesum(i) = sum(gradline(:,i));
-%                     gradlinesum(i) = peak2peak(gradline(:,i));
-%                     nullcheck_row = ismember(gradlinerow,obj.rownull);
-%                     nullcheck_col = ismember(gradlinecol,obj.colnull);
-%                     nullcheck = nullcheck_row & nullcheck_col;
-%                     if any(nullcheck == 1) % if the gradient line crosses
-%                         % a nulled grain, null the gradient line
-%                         gradline(:,i) = NaN;
-%                     end
-%                     if any(isnan(gradline(:,i))) == 1
-%                         gradline(:,i) = NaN;
-%                     end
+%                     gradlinesum(i) = peak2peak(obj.parameter_index(gradlinerow(:,i),gradlinecol(:,i)));
+                    gradlinesum(i) = peak2peak(gradline(:,i));
                 end
        end
 
@@ -170,33 +166,35 @@ classdef PLCobject
        function obj = CutLineMaxGradient(obj)
        % Solve for the cut line across the max gradient of the parameter of
        % interest.      
-            [maxgradrow,maxgradcol] = find(obj.gradient == obj.max_gradient);
+            [maxgradrow,maxgradcol] = find(obj.parameter_gradient == obj.max_gradient);
             obj.max_gradient_row = maxgradrow;
             obj.max_gradient_col = maxgradcol;
             obj.vxcenter = maxgradcol;
             obj.vycenter = maxgradrow;
             [gradline, gradlinecol, gradlinerow, gradlinesum, graddist, i_coords] = obj.GradientLineRotation();
-            [~,col] = find(gradlinesum == max(gradlinesum));
+            [~,columns] = find(gradlinesum == max(gradlinesum));
+            col = columns(1,1);
             obj.gradient_cutline = gradline(:,col);
             obj.gradline_col = gradlinecol(:,col);
             obj.gradline_row = gradlinerow(:,col);
                 
             if isempty(obj.gradient_cutline) == 0
-                gradient_vector = obj.gradient(:);
+                gradient_vector = obj.parameter_gradient(:);
                 gradient_vector = sort(gradient_vector(:),'descend','MissingPlacement','last');
                 legitimate_value = false;
                 k = 1;
                 while legitimate_value == false
                     sprintf('%s',k);
                     maxgrad = gradient_vector(k,1); % identify the maximum gradient value
-                    [maxgradrow,maxgradcol] = find(obj.gradient == maxgrad);
+                    [maxgradrow,maxgradcol] = find(obj.parameter_gradient == maxgrad);
                         % find the location of the maxmimum gradient value
                     obj.max_gradient_row = maxgradrow;
                     obj.max_gradient_col = maxgradcol;
                     obj.vxcenter = maxgradcol;
                     obj.vycenter = maxgradrow;
                     [gradline, gradlinecol, gradlinerow, gradlinesum, graddist, i_coords] = obj.GradientLineRotation();
-                    [~,col] = find(gradlinesum == max(gradlinesum));
+                    [~,columns] = find(gradlinesum == max(gradlinesum));
+                    col = columns(1,1);
                     obj.gradient_cutline = gradline(:,col);
                     obj.gradline_col = gradlinecol(:,col);
                     obj.gradline_row = gradlinerow(:,col);
@@ -258,34 +256,12 @@ classdef PLCobject
         
         obj.matrix(obj.matrix==Inf) = 0;
         obj.matrix(obj.matrix==-Inf) = 0;
-        obj.gradient(isnan(obj.matrix)==1) = NaN;
-%         obj.CutLineMaxGradient; % recalculate the maxmimum
-            % gradient after masking grains
-%         obj.SetCutLine;
+        obj.parameter_gradient(isnan(obj.matrix)==1) = NaN;
         obj.gradline_row_round = round(obj.gradline_row);
         obj.gradline_col_round = round(obj.gradline_col);
         obj.gradline_coords_round = [obj.gradline_row_round,obj.gradline_col_round];
-%            for i = 1:size(obj.gradient_cutline,1)
-%                if ismember(obj.gradline_row_round,obj.rownull) == 1
-%                loc_gradline = [obj.gradline_row_round(i),obj.gradline_col_round(i)];
-%                loc_nullspace = [obj.rownull);
-%                end
-%            end
-%            [obj.nullcheck_row,obj.locb_row] = ismember(obj.gradline_row_round,obj.rownull);
-%            [obj.nullcheck_col,obj.locb_col] = ismember(obj.gradline_col_round,obj.colnull);
-%            obj.nullcheck = obj.locb_row & obj.locb_col;
-%            obj.nullcheck = obj.nullcheck_row & obj.nullcheck_col;
-        
-%        [obj.nullcheck,obj.locb_coords] = ismember(obj.gradline_coords_round,obj.null_coords,'rows');
-%         obj.nullcheck = ismember(obj.gradline_coords_round,obj.locb_coords);
-%         obj.gradient_cutline(obj.nullcheck==1) = NaN; % if the gradient 
-         
-               % line crosses a nulled grain, null that portion of the gradient line
-%            if any(isnan(obj.gradient_cutline) == 1)
-%                obj.gradient_cutline(obj.nullcheck==1) = NaN;
-%                %gradline(:,i) = NaN;
-%            end
        end
+
        
       function obj = SetCutLine(obj, varargin)
        % Either use the object's vertices as defined in another method
@@ -313,16 +289,20 @@ classdef PLCobject
             obj.cut_line_v2 = [obj.vx2,obj.vy2]; % cartesian coordinates for
                 % the 2nd vertex of the cut line / line of cross section
             obj.vertex_distance = round(pdist([obj.vx1,obj.vy1;obj.vx2,obj.vy2],'euclidean'));           
-%             xc_line = smooth(improfile(obj.parameter_index,...
-%                 [obj.vx1,obj.vx2], [obj.vy1,obj.vy2], obj.vertex_distance+1,...
-%                 'bilinear'),'moving');  % find the values along the line
-%             obj.cutline = xc_line;
-      end
+            xc_line = smooth(improfile(obj.parameter_index,...
+                [obj.vx1,obj.vx2], [obj.vy1,obj.vy2], obj.vertex_distance+1,...
+                'bilinear'),'moving');  % find the values along the line
+            obj.cutline = xc_line;
+       end
        
                    
        function max_less_min = MaxLessMin(obj, varargin)
-       % calculate the max-min of the parameter of interest across the line
-       % of cross section
+       % Calculates the max-min of the parameter of interest across the line
+       % of cross section. Unless a parameter of interest is provided as 
+       % an input argument, the method defaults to using the parameter of
+       % interest defined by the data pro PLCvars
+       %
+       % EXAMPLE: max_less_min(i,:) = obj.MaxLessMin(varmag_component);
             if size(varargin,2) == 1
                 varmag_comp = varargin{1};
             else
@@ -336,6 +316,7 @@ classdef PLCobject
             max_less_min(1,1) = str2double(param_x(end-2:end));
             max_less_min(1,2) = max_param - min_param;
        end
+       
        
        function obj = RotateByTheta(obj, i, theta, xcv)
        % solve for new cut line vertices using the equations:
@@ -360,6 +341,7 @@ classdef PLCobject
            end
        end
        
+       
        function var_norm = Normalize(obj,var,dimension)
        % Convert native spatial units to 0-to-1 spatial units
        %
@@ -377,6 +359,7 @@ classdef PLCobject
                error('the dimension must be provided as X, x, Y, or y')
            end
        end
+       
        
       function var_norm = Denormalize(obj,var,dimension)
       % Convert 0-to-1 spatial units to native spatial units
@@ -397,7 +380,24 @@ classdef PLCobject
       end
       
       
-       
+      function obj = MaskByThreshold(threshold_value)
+        threshold = threshold_value/100;
+        X = obj.parameter_index/max(obj.parameter_index(:));
+        X(isnan(X)) = 0;
+        X(X==Inf) = 0;
+        X(X==-Inf) = 0;
+        W = min(X(X>0));
+        X((X-W)>threshold) = 0;
+        maskedImage = X;
+        % Determine which values fall outside of the grain boundary
+        obj.matrix = obj.parameter_index;
+        obj.matrix(maskedImage>0) = NaN;
+        if sum(~isnan(obj.matrix)) < 1
+            error('The current threshold value resulted in a null grain matrix')
+        end
+      end
+      
+      
 %        function obj = GradientLineTranslation(obj)
 %             alpha = pi/36; % angle of rotation in radians (pi/144 is default)
 %             graddist = zeros(2*pi/alpha,1);
@@ -431,31 +431,14 @@ classdef PLCobject
 %                         ix2(i),iy2(i)],'euclidean'));
 %                     
 %                     [gradlinecol,gradlinerow,gradline(:,i)] = improfile(...
-%                         obj.gradient,[ix1(i),ix2(i)],[iy1(i),iy2(i)],...
+%                         obj.parameter_gradient,[ix1(i),ix2(i)],[iy1(i),iy2(i)],...
 %                         graddist(i)+1,'bilinear'); % find the values along 
 %                         % the line of cross section
 %                     gradline(:,i) = smooth(gradline(:,i),'moving');
 %                     gradlinesum(i) = sum(gradline(:,i));
 %                 end
 %        end
-      
-      
-%       function obj = MaskByThreshold(threshold_value)
-%         threshold = threshold_value/100;
-%         X = obj.parameter_index/max(obj.parameter_index(:));
-%         X(isnan(X)) = 0;
-%         X(X==Inf) = 0;
-%         X(X==-Inf) = 0;
-%         W = min(X(X>0));
-%         X((X-W)>threshold) = 0;
-%         maskedImage = X;
-%         % Determine which values fall outside of the grain boundary
-%         obj.matrix = obj.parameter_index;
-%         obj.matrix(maskedImage>0) = NaN;
-%         if sum(~isnan(obj.matrix)) < 1
-%             error('The current threshold value resulted in a null grain matrix')
-%         end
-%       end
+
       
    end
 end

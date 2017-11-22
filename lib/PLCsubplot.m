@@ -4,6 +4,8 @@ function subhandle = PLCsubplot(fighandle,m,n,p,plcobj,params)
 subhandle(p) = subplot(m,n,p);
 parameter = params{1,p};
 imagesc(parameter);
+% if p == 2
+%     quiver(
 dcm_obj = datacursormode(fighandle);
 set(dcm_obj,'UpdateFcn',{@SubPlotDataCursorText,plcobj,subhandle(p),p,params})
 end
