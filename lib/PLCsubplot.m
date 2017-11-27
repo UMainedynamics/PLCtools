@@ -1,3 +1,6 @@
+% These functions allow for the use of the Data Cursor to pull information
+% from the plc object and plot it alongside its normalized coordinates.
+
 function subhandle = PLCsubplot(fighandle,m,n,p,plcobj,params)
 % Plots graph and sets up a custom data tip update function
 % for a subplot (either horizontal or vertical) with two components
