@@ -41,6 +41,7 @@ classdef PLCobject
        nullpolygon
        lower_plot_bound
        upper_plot_bound
+       paramline
    end
    
    
@@ -107,7 +108,7 @@ classdef PLCobject
        end
        
        
-       function [gradline, gradlinerow, gradlinecol, gradlinesum, graddist, i_coords] = GradientLineRotation(obj)
+       function [gradline, gradlinerow, gradlinecol, graddist, parameterline, i_coords] = GradientLineRotation(obj)
            % Rotates the line of cross section about the centroid, which is
            % defined by the maximum gradient. Returns the rotated line, its
            % coordinate information, 
@@ -118,7 +119,7 @@ classdef PLCobject
             gradline = zeros(obj.cutlinelength+1,2*pi/alpha);
             gradlinerow = zeros(obj.cutlinelength+1,2*pi/alpha);
             gradlinecol = zeros(obj.cutlinelength+1,2*pi/alpha);
-            gradlinesum = zeros(1,2*pi/alpha);
+            parameterline = zeros(obj.cutlinelength+1,2*pi/alpha);
             i_coords = zeros(2*pi/alpha,4); % XC line vertex coordinates
             ix1 = zeros(2*pi/alpha,1);
             iy1 = zeros(2*pi/alpha,1);
@@ -151,10 +152,14 @@ classdef PLCobject
                     [gradlinecol(:,i),gradlinerow(:,i),gradline(:,i)] = improfile(...
                         obj.parameter_gradient,[ix1(i),ix2(i)],[iy1(i),iy2(i)],...
                         graddist(i)+1,'bilinear'); % find the values along 
+                        % the line of cross section for the gradient
+                    [~,~,parameterline(:,i)] = improfile(...
+                        obj.parameter_index,[ix1(i),ix2(i)],[iy1(i),iy2(i)],...
+                        graddist(i)+1,'bilinear'); % find the values along 
                         % the line of cross section
                     gradline(:,i) = smooth(gradline(:,i),'moving');
 %                     gradlinesum(i) = peak2peak(obj.parameter_index(gradlinerow(:,i),gradlinecol(:,i)));
-                    gradlinesum(i) = peak2peak(gradline(:,i));
+%                     gradlinesum(i) = peak2peak(gradline(:,i));
                 end
        end
 
@@ -167,8 +172,12 @@ classdef PLCobject
             obj.max_gradient_col = maxgradcol;
             obj.vxcenter = maxgradcol;
             obj.vycenter = maxgradrow;
-            [gradline, gradlinecol, gradlinerow, gradlinesum, graddist, i_coords] = obj.GradientLineRotation();
-            [~,columns] = find(gradlinesum == max(gradlinesum));
+            [gradline, gradlinecol, gradlinerow, graddist, parameterline, i_coords] = obj.GradientLineRotation();
+%             gradlinesum(i) = peak2peak(obj.parameter_index(gradlinerow(:,i),gradlinecol(:,i)));
+            gradlinesum = peak2peak(gradline);
+            gradparamline = gradient(parameterline);
+%             [~,columns] = find(gradlinesum == max(gradlinesum));
+            [~,columns] = find(gradparamline == max(abs(gradparamline)));
             col = columns(1,1);
             obj.gradient_cutline = gradline(:,col);
             obj.gradline_col = gradlinecol(:,col);
@@ -188,7 +197,7 @@ classdef PLCobject
                     obj.max_gradient_col = maxgradcol;
                     obj.vxcenter = maxgradcol;
                     obj.vycenter = maxgradrow;
-                    [gradline, gradlinecol, gradlinerow, gradlinesum, graddist, i_coords] = obj.GradientLineRotation();
+                    [gradline, gradlinecol, gradlinerow, graddist, ~] = obj.GradientLineRotation();
                     [~,columns] = find(gradlinesum == max(gradlinesum));
                     col = columns(1,1);
                     obj.gradient_cutline = gradline(:,col);

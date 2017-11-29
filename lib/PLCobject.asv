@@ -4,7 +4,12 @@ classdef PLCobject
        total_size
        fname_components
        varmag_component
+       stress_file
        theta
+       parameter_index
+       cut_line_v1
+       cut_line_v2
+       cutlinelength
        cutline
        vx1
        vy1
@@ -12,43 +17,34 @@ classdef PLCobject
        vy2
        vxcenter
        vycenter
-       stress_file
        vertex_distance
        grad_vertex_distance
-       parameter_index
-       cut_line_v1
-       cut_line_v2
-       cutlinelength
        parameter_gradient
        grad_x
        grad_y
+       max_gradient
+       max_gradient_row
+       max_gradient_col
        gradient_sigma
        gradient_cutline
+       gradline_row
+       gradline_col
+       gradline_coords_round
        matrix
        grains
        graincount
        phases
        phasescount
        phasesnulled
+       null_coords
        nullspace
        nullpolygon
-       rownull
-       colnull
-       null_coords
-       nullcheck
-       nullcheck_row
-       nullcheck_col
-       max_gradient
-       max_gradient_row
-       max_gradient_col
-       gradline_row
-       gradline_col
-       gradline_row_round
-       gradline_col_round
        lower_plot_bound
        upper_plot_bound
-       gradline_coords_round
+       paramline
    end
+   
+   
    methods
        function obj = PLCobject(PLCvars,varargin)
        % Expects PLCvars to be a cell containing the parameter of
@@ -112,9 +108,10 @@ classdef PLCobject
        end
        
        
-       function [gradline, gradlinerow, gradlinecol, gradlinesum, graddist, i_coords] = GradientLineRotation(obj)
+       function [gradline, gradlinerow, gradlinecol, graddist, parameterline, i_coords] = GradientLineRotation(obj)
            % Rotates the line of cross section about the centroid, which is
-           % defined by the maximum gradient.
+           % defined by the maximum gradient. Returns the rotated line, its
+           % coordinate information, 
            %
            % EXAMPLE: [gradline, gradlinecol, gradlinerow, gradlinesum, graddist, i_coords] = obj.GradientLineRotation();
             alpha = pi/144; % angle of rotation in radians (pi/144 is default)
@@ -122,8 +119,8 @@ classdef PLCobject
             gradline = zeros(obj.cutlinelength+1,2*pi/alpha);
             gradlinerow = zeros(obj.cutlinelength+1,2*pi/alpha);
             gradlinecol = zeros(obj.cutlinelength+1,2*pi/alpha);
-            gradlinesum = zeros(1,2*pi/alpha);
-            i_coords = zeros(2*pi/alpha,4);
+            parameterline = zeros(obj.cutlinelength+1,2*pi/alpha);
+            i_coords = zeros(2*pi/alpha,4); % XC line vertex coordinates
             ix1 = zeros(2*pi/alpha,1);
             iy1 = zeros(2*pi/alpha,1);
             ix2 = zeros(2*pi/alpha,1);
@@ -155,10 +152,14 @@ classdef PLCobject
                     [gradlinecol(:,i),gradlinerow(:,i),gradline(:,i)] = improfile(...
                         obj.parameter_gradient,[ix1(i),ix2(i)],[iy1(i),iy2(i)],...
                         graddist(i)+1,'bilinear'); % find the values along 
+                        % the line of cross section for the gradient
+                    [~,~,parameterline(:,i)] = improfile(...
+                        obj.parameter_index,[ix1(i),ix2(i)],[iy1(i),iy2(i)],...
+                        graddist(i)+1,'bilinear'); % find the values along 
                         % the line of cross section
                     gradline(:,i) = smooth(gradline(:,i),'moving');
 %                     gradlinesum(i) = peak2peak(obj.parameter_index(gradlinerow(:,i),gradlinecol(:,i)));
-                    gradlinesum(i) = peak2peak(gradline(:,i));
+%                     gradlinesum(i) = peak2peak(gradline(:,i));
                 end
        end
 
@@ -171,8 +172,12 @@ classdef PLCobject
             obj.max_gradient_col = maxgradcol;
             obj.vxcenter = maxgradcol;
             obj.vycenter = maxgradrow;
-            [gradline, gradlinecol, gradlinerow, gradlinesum, graddist, i_coords] = obj.GradientLineRotation();
-            [~,columns] = find(gradlinesum == max(gradlinesum));
+            [gradline, gradlinecol, gradlinerow, graddist, parameterline, i_coords] = obj.GradientLineRotation();
+%             gradlinesum(i) = peak2peak(obj.parameter_index(gradlinerow(:,i),gradlinecol(:,i)));
+            gradlinesum = peak2peak(gradline);
+            gradparamline = gradient(parameterline);
+%             [~,columns] = find(gradlinesum == max(gradlinesum));
+            [~,columns] = find(gradparamline == max(gradparamline));
             col = columns(1,1);
             obj.gradient_cutline = gradline(:,col);
             obj.gradline_col = gradlinecol(:,col);
@@ -192,13 +197,12 @@ classdef PLCobject
                     obj.max_gradient_col = maxgradcol;
                     obj.vxcenter = maxgradcol;
                     obj.vycenter = maxgradrow;
-                    [gradline, gradlinecol, gradlinerow, gradlinesum, graddist, i_coords] = obj.GradientLineRotation();
+                    [gradline, gradlinecol, gradlinerow, graddist, ~] = obj.GradientLineRotation();
                     [~,columns] = find(gradlinesum == max(gradlinesum));
                     col = columns(1,1);
                     obj.gradient_cutline = gradline(:,col);
                     obj.gradline_col = gradlinecol(:,col);
                     obj.gradline_row = gradlinerow(:,col);
-
                     if isempty(obj.gradient_cutline) == 0
                         if k > 30
                             sprintf('%s','WARNING: ',num2str(k-1),...
@@ -251,15 +255,15 @@ classdef PLCobject
             obj.matrix(on) = NaN;
         end
         obj.nullspace = isnan(obj.matrix)==1;
-        [obj.rownull,obj.colnull] = find(obj.nullspace==1);
-        obj.null_coords = [obj.rownull,obj.colnull];
+        [rownull,colnull] = find(obj.nullspace==1);
+        obj.null_coords = [rownull,colnull];
         
         obj.matrix(obj.matrix==Inf) = 0;
         obj.matrix(obj.matrix==-Inf) = 0;
         obj.parameter_gradient(isnan(obj.matrix)==1) = NaN;
-        obj.gradline_row_round = round(obj.gradline_row);
-        obj.gradline_col_round = round(obj.gradline_col);
-        obj.gradline_coords_round = [obj.gradline_row_round,obj.gradline_col_round];
+        gradline_row_round = round(obj.gradline_row);
+        gradline_col_round = round(obj.gradline_col);
+        obj.gradline_coords_round = [gradline_row_round,gradline_col_round];
        end
 
        
