@@ -41,7 +41,6 @@ classdef PLCobject
        nullpolygon
        lower_plot_bound
        upper_plot_bound
-       paramline
    end
    
    
