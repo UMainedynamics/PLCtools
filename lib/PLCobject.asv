@@ -2,7 +2,6 @@ classdef PLCobject
    properties
        parameter
        total_size
-       real_size
        fname_components
        varmag_component
        stress_file
@@ -75,10 +74,9 @@ classdef PLCobject
             [row,col] = find(isnan(obj.parameter_index)==0);
             obj.parameter_index = obj.parameter_index(...
                 min(row):max(row),min(col):max(col));
-            obj.real_size = floor(size(obj.parameter_index));
-            % Retrieve grain and phase info from the microstructure field
             msfname = strcat(strjoin(obj.fname_components(1:end-3),...
             '_'),'.mat');
+            % Retrieve grain and phase info from the microstructure field
             msload = load(msfname);
             obj.grains = msload.ms.Grains;
             obj.phases = msload.ms.GrainPhases;
@@ -247,12 +245,9 @@ classdef PLCobject
                 [Y,X] = find(obj.parameter_index);
                 [in,on] = inpolygon(X,Y,xv(k),yv(k));
                 %nullpolygon = [xv(k),yv(k)];
-                matrixspace = obj.parameter_index;
-                matrixspace(in) = NaN;
-                matrixspace(on) = NaN;
-                matrixspace = flipud(matrixspace);
                 obj.matrix = obj.parameter_index;
-                obj.matrix(isnan(matrixspace)) = NaN;
+                obj.matrix(in) = NaN;
+                obj.matrix(on) = NaN;
             end
             obj.nullspace = isnan(obj.matrix)==1;
             [rownull,colnull] = find(obj.nullspace==1);
