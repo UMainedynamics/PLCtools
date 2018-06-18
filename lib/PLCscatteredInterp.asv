@@ -17,12 +17,11 @@ phase_to_exclude = 2;
 xGrain = [ms.Grains{1, row}(:,1),ms.Grains{1, row}(:,2)];
 xGrainNorm = xGrain/max(xGrain(:));
 
+
 xv = xGrainNorm(:,1);
 yv = xGrainNorm(:,2);
-px = polyshape(xGrainNorm);
-[x, y] = boundary(px);
-k = boundary(x, y);
-[in,on] = inpolygon(xq,yq,xv(k),yv(k));
+k = boundary(xv,yv,0.97);
+[in,on] = inpolygon(xq,yq,xv(px),yv(px));
 %nullpolygon = [xv(k),yv(k)];
 cq(in) = NaN;
 cq(on) = NaN;
