@@ -1,0 +1,27 @@
+--- Power law creep analysis data for file Fold3cgsm30.png     Created on 2/9 at 11h 59m 
+
+
+Number of elements in analysis mesh = 4814
+
+--- PHASE INFORMATION --- 
+
+  #         Name         Mode           Ad            n            Q
+
+  1       matrix      70.0900   1.8050e-08       4.0000   1.3500e+05
+  2       quartz      29.9100   1.8050e-09       4.0000   1.3500e+05
+ 
+
+--- MACROSCALE FIELD VARIABLES --- 
+
+                 Strain Rate          Stress     Max. Principal  Min. Principal     Max. Princ.     Min. Princ.    Differential                
+ Temperature       Invariant       Invariant    Stress(tensile)          Stress     Dev. Stress     Dev. Stress          Stress       Viscosity
+         723    1.153980e-11    3.000000e+01       3.000000e+01   -3.000000e+01    3.000000e+01   -3.000000e+01    6.000000e+01    1.299850e+12
+         723    8.904020e-11    5.000000e+01       5.000000e+01   -5.000000e+01    5.000000e+01   -5.000000e+01    1.000000e+02    2.807720e+11
+ 
+
+--- MICROSCALE FIELD VARIABLES --- 
+
+               Macro. Stress          Max. Micro.          Min. Micro.          Max. Micro.          Min. Micro.               Max. Micro.               Min. Micro.          Max. Micro.          Min. Micro.          Max. Micro.          Min. Micro.          Max. Micro.          Min. Micro.          Max. Micro.          Max. Micro.
+ Temperature       Invariant     Strain Rate Inv.     Strain Rate Inv.   Princ. Strain Rate   Princ. Strain Rate   Princ. Dev. Strain Rate   Princ. Dev. Strain Rate          Stress Inv.          Stress Inv.        Princ. Stress        Princ. Stress   Princ. Dev. Stress   Princ. Dev. Stress         Shear Stress            Viscosity
+         723    3.000000e+01         3.640560e-11         2.549100e-13         7.271756e-11        -7.271804e-11              7.271770e-11             -7.271790e-11         4.665750e+01         1.778890e+01         6.859317e+01        -2.472183e+01         4.665900e+01        -4.665600e+01         4.665750e+01         3.489930e+13
+         723    5.000000e+01         2.809000e-10         1.966700e-12         5.610789e-10        -5.610821e-10              5.610800e-10             -5.610810e-10         7.776250e+01         2.964820e+01         1.143219e+02        -4.120300e+01         7.776490e+01        -7.776000e+01         7.776250e+01         7.538790e+12
