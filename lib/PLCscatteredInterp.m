@@ -1,4 +1,4 @@
-user = 'Peter Koons'; % 'Peter Koons' for work pc or 'NWRichmond' for home pc
+user = 'NWRichmond'; % 'Peter Koons' for work pc or 'NWRichmond' for home pc
 plc_case = 'Fold3cgsm30_2m_9d_11h_59m';
 cd(strcat('C:\Users\', ...
     user,'\Documents\GitHub\PLCtools\', ...
@@ -11,7 +11,7 @@ phase_to_exclude = 2;
 
 coords = ms.MicroCoordinates/max(ms.MicroCoordinates(:));
 mst =[coords, ms.MicroStress{10, 1}(:,end)];
-mst_table = array2table(mst,...
+mst_table = array2table(mst, ...
     'VariableNames',{'x','y','stress'});
 mst_mask = mst(row_elem,:);
 mst_mask_table = array2table(mst_mask,...
@@ -32,7 +32,7 @@ yv = xGrainNorm(:,2);
 cq(in) = NaN;
 cq(on) = NaN;
 
-h = pcolor(xq,yq,cq);
+h = pcolor(xq,yq,gradient(cq));
 h.EdgeColor = 'none';
 
 % hold on

@@ -1,13 +1,16 @@
 classdef PLCobject
    properties
        parameter
+       tempInterval
+       stressStrainInterval
+       kValue
+       microstructure
        total_size
        real_size
-       fname_components
        varmag_component
-       stress_file
+       parameter_file
        theta
-       parameter_index
+       target_data
        cut_line_v1
        cut_line_v2
        cutlinelength
@@ -43,55 +46,78 @@ classdef PLCobject
    
    
    methods
-       function obj = PLCobject(PLCvars,varargin)
-       % Expects PLCvars to be a cell containing the parameter of
-       % interest, temperature interval, stress-strain interval, and
-       % k-value. EXAMPLE: PLCvars = {'stress',1,1,10};
-           obj.parameter = PLCvars{1};
-           obj.stress_file = dir([pwd '/*' obj.parameter '_griddata.mat']);
-           load(obj.stress_file.name);
-           parameter_data = strcat('micro_',[obj.parameter]);
-            if strcmp([obj.parameter],'visc') || strcmp([obj.parameter],'pdd') == 1
-                obj.parameter_index = eval(strcat(parameter_data,'{',num2str(PLCvars{2}),...
-                    ',',num2str(PLCvars{3}),'}'));
+       function obj = PLCobject(parameter, tempInterval, ...
+               stressStrainInterval, varargin)
+        % Requires as input arguments the parameter of interest 
+        % ('stress' 'strain' 'visc' or 'pdd'), temperature interval, 
+        % stress-strain interval, and k-value.
+        %
+        % EXAMPLE : loadPLCdata('parameter','stress', ...
+        % 'tempInterval',1,'stressStrainInterval',1, ...
+        % 'kValue',10);
+            expectedParameters = {'stress','strain','visc','pdd'};
+            
+            p = inputParser;
+                validScalarPosNum = @(x) isnumeric(x) && isscalar(x) && (x > 0);
+                validKvalues = @(x) isnumeric(x) && isscalar(x) && (x > 0) && (x <= 11);
+%                 p.Results.FunctionName = 'loadPLCdata';
+                addRequired(p,'parameter', ...
+                    @(x) any(validatestring(x,expectedParameters)));
+                addRequired(p,'tempInterval',validScalarPosNum);
+                addRequired(p,'stressStrainInterval',validScalarPosNum)
+                addParameter(p,'kValue', validKvalues);
+            parse(p, parameter, tempInterval, ...
+               stressStrainInterval, varargin{:});
+            obj.parameter = p.Results.parameter;
+            obj.tempInterval = p.Results.tempInterval;
+            obj.stressStrainInterval = p.Results.stressStrainInterval;
+            obj.kValue = p.Results.stressStrainInterval;
+            % Load the data from the microstructure field
+            loadPLCdata(obj);
+            
+            % Retrieve grain and phase info from the microstructure field
+            obj.grains = obj.microstructure.Grains;
+            obj.phases = obj.microstructure.GrainPhases;
+            obj.graincount = size((obj.grains),2);
+            % count the number of individual grains
+            obj.phasescount = size(unique(obj.phases),1);
+            % count distinct phases are in the list of grains
+            obj.target_data = flipud(obj.target_data);
+            obj.total_size = floor(size(obj.target_data));
+       end
+       
+       
+       function obj = loadPLCdata(obj)
+            microstress = dir([pwd '/*_micro_stress_griddata.mat']);
+            run_name_delimiter = '_';
+            fname_components = strsplit(microstress.name, ...
+                run_name_delimiter);
+            obj.microstructure = strcat(strjoin( ...
+                fname_components(1:end-3),'_'),'.mat');
+            obj.microstructure = load(obj.microstructure);
+            obj.microstructure = obj.microstructure.ms;
+
+            parameter_data = strcat('micro_',obj.parameter);  
+            if strcmp(obj.parameter,'visc') || strcmp(obj.parameter,'pdd') == 1
+                obj.target_data = eval(strcat(parameter_data,'{', ...
+                    num2str(obj.tempInterval),',', ...
+                    num2str(obj.stressStrainInterval),'}'));
             else
-                if size(PLCvars,2) > 3
-                    obj.parameter_index = eval(strcat(parameter_data,'{',num2str(PLCvars{2}),...
-                    ',',num2str(PLCvars{3}),',',num2str(PLCvars{4}),'}'));
-                    obj.varmag_component = PLCvars{5};
+                if strcmp(obj.parameter,'stress') || strcmp(obj.parameter,'strain') == 1
+                    obj.target_data = eval(strcat(parameter_data,'{',...
+                        num2str(obj.tempInterval),',', ...
+                        num2str(obj.stressStrainInterval),',', ...
+                        num2str(obj.kValue),'}'));
                 else
-                    error('k-value must be included if "visc" or "pdd" is parameter of interest')
+                    error('k-value must be included if the parameter of interest is stress or strain')
                 end
             end
-            obj.parameter_index = flipud(obj.parameter_index);
-            obj.total_size = floor(size(obj.parameter_index));
-            if size(varargin,2) >= 1
-                run_name_delimiter = varargin{1};
-            else
-                run_name_delimiter = '_';
-            end
-            obj.fname_components = strsplit(obj.stress_file.name,run_name_delimiter);
-            % Find the plot limits
-            [row,col] = find(isnan(obj.parameter_index)==0);
-            obj.parameter_index = obj.parameter_index(...
-                min(row):max(row),min(col):max(col));
-            obj.real_size = floor(size(obj.parameter_index));
-            % Retrieve grain and phase info from the microstructure field
-            msfname = strcat(strjoin(obj.fname_components(1:end-3),...
-            '_'),'.mat');
-            msload = load(msfname);
-            obj.grains = msload.ms.Grains;
-            obj.phases = msload.ms.GrainPhases;
-            obj.graincount = size((obj.grains),2);
-                % count the number of individual grains
-            obj.phasescount = size(unique(obj.phases),1);
-                % count distinct phases are in the list of grains
-       end
+        end
        
        
        function obj = CalculateGradient(obj, cutlinelength, varargin)
        % Calculate the gradient of the parameter of interest as defined
-       % by the obj.parameter_index data. Expects a kernel value for the
+       % by the obj.target_data data. Expects a kernel value for the
        % calculation of the gradient as defined by Guanglei Xiong's
        % gaussgradient function. Adding another argument allows masking of
        % grains by phase number.
@@ -102,7 +128,7 @@ classdef PLCobject
        % EXAMPLE 3: obj(i) = obj(i).CalculateGradient(1,2)
        % ---> this example masks the grains with a phase number of 2
             obj.cutlinelength = cutlinelength * (obj.total_size(1,2)-1);
-            [obj.grad_x,obj.grad_y] = gradient(obj.parameter_index,1);
+            [obj.grad_x,obj.grad_y] = gradient(obj.target_data,1);
             obj.parameter_gradient = sqrt((obj.grad_x).^2+(obj.grad_y).^2);
             
             if size(varargin,2) == 1
@@ -160,11 +186,11 @@ classdef PLCobject
                         graddist(i)+1,'bilinear'); % find the values along 
                         % the line of cross section for the gradient
                     [~,~,parameterline(:,i)] = improfile(...
-                        obj.parameter_index,[ix1(i),ix2(i)],[iy1(i),iy2(i)],...
+                        obj.target_data,[ix1(i),ix2(i)],[iy1(i),iy2(i)],...
                         graddist(i)+1,'bilinear'); % find the values along 
                         % the line of cross section
                     gradline(:,i) = smooth(gradline(:,i),'moving');
-%                     gradlinesum(i) = peak2peak(obj.parameter_index(gradlinerow(:,i),gradlinecol(:,i)));
+%                     gradlinesum(i) = peak2peak(obj.target_data(gradlinerow(:,i),gradlinecol(:,i)));
 %                     gradlinesum(i) = peak2peak(gradline(:,i));
                 end
        end
@@ -179,7 +205,7 @@ classdef PLCobject
             obj.vxcenter = maxgradcol;
             obj.vycenter = maxgradrow;
             [gradline, gradlinecol, gradlinerow, graddist, parameterline, i_coords] = obj.GradientLineRotation();
-%             gradlinesum(i) = peak2peak(obj.parameter_index(gradlinerow(:,i),gradlinecol(:,i)));
+%             gradlinesum(i) = peak2peak(obj.target_data(gradlinerow(:,i),gradlinecol(:,i)));
             gradlinesum = peak2peak(gradline);
             gradparamline = gradient(parameterline);
 %             [~,columns] = find(gradlinesum == max(gradlinesum));
@@ -238,20 +264,24 @@ classdef PLCobject
        % If an argument is provided with cell
        % values corresponding to phases, subtract those phases
        % from the area in which the gradient is calculated
+            coords = ms.MicroCoordinates/max(ms.MicroCoordinates(:));
+            mst =[coords, ms.MicroStress{10, 1}(:,end)];
+            mst_table = array2table(mst, ...
+                'VariableNames',{'x','y','stress'});
             [grainRow,~] = find(obj.phases==obj.phasesnulled);
             for i = grainRow'
                 target_grain = [obj.grains{1,i}];
                 xv = target_grain(:,1);
                 yv = target_grain(:,2);
                 k = boundary(xv,yv,0.95);
-                [Y,X] = find(obj.parameter_index);
+                [Y,X] = find(obj.target_data);
                 [in,on] = inpolygon(X,Y,xv(k),yv(k));
                 %nullpolygon = [xv(k),yv(k)];
-                matrixspace = obj.parameter_index;
+                matrixspace = obj.target_data;
                 matrixspace(in) = NaN;
                 matrixspace(on) = NaN;
                 matrixspace = flipud(matrixspace);
-                obj.matrix = obj.parameter_index;
+                obj.matrix = obj.target_data;
                 obj.matrix(isnan(matrixspace)) = NaN;
             end
             obj.nullspace = isnan(obj.matrix)==1;
@@ -294,7 +324,7 @@ classdef PLCobject
                 % the 2nd vertex of the cut line / line of cross section
             obj.vertex_distance = round(pdist([obj.vx1,obj.vy1;...
                 obj.vx2,obj.vy2],'euclidean'));           
-            xc_line = smooth(improfile(obj.parameter_index,...
+            xc_line = smooth(improfile(obj.target_data,...
                 [obj.vx1,obj.vx2], [obj.vy1,obj.vy2], obj.vertex_distance+1,...
                 'bilinear'),'moving');  % find the values along the line
             obj.cutline = xc_line;
@@ -387,7 +417,7 @@ classdef PLCobject
       
       function obj = MaskByThreshold(threshold_value)
         threshold = threshold_value/100;
-        X = obj.parameter_index/max(obj.parameter_index(:));
+        X = obj.target_data/max(obj.target_data(:));
         X(isnan(X)) = 0;
         X(X==Inf) = 0;
         X(X==-Inf) = 0;
@@ -395,7 +425,7 @@ classdef PLCobject
         X((X-W)>threshold) = 0;
         maskedImage = X;
         % Determine which values fall outside of the grain boundary
-        obj.matrix = obj.parameter_index;
+        obj.matrix = obj.target_data;
         obj.matrix(maskedImage>0) = NaN;
         if sum(~isnan(obj.matrix)) < 1
             error('The current threshold value resulted in a null grain matrix')
