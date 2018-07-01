@@ -55,7 +55,8 @@ classdef PLCobject
         % EXAMPLE : loadPLCdata('parameter','stress', ...
         % 'tempInterval',1,'stressStrainInterval',1, ...
         % 'kValue',10);
-            expectedParameters = {'stress','strain','visc','pdd'};
+            expectedParameters = {'Stress','Strain','Viscosity', ...
+                'PowerDissipationDensity'};
             
             p = inputParser;
                 validScalarPosNum = @(x) isnumeric(x) && isscalar(x) && (x > 0);
@@ -71,9 +72,10 @@ classdef PLCobject
             obj.parameter = p.Results.parameter;
             obj.tempInterval = p.Results.tempInterval;
             obj.stressStrainInterval = p.Results.stressStrainInterval;
-            obj.kValue = p.Results.stressStrainInterval;
+            obj.kValue = p.Results.kValue;
+            
             % Load the data from the microstructure field
-            loadPLCdata(obj);
+            obj = loadPLCdata(obj);
             
             % Retrieve grain and phase info from the microstructure field
             obj.grains = obj.microstructure.Grains;
@@ -92,26 +94,23 @@ classdef PLCobject
             run_name_delimiter = '_';
             fname_components = strsplit(microstress.name, ...
                 run_name_delimiter);
+            parameter_data = strcat('Micro',obj.parameter);
             obj.microstructure = strcat(strjoin( ...
                 fname_components(1:end-3),'_'),'.mat');
             obj.microstructure = load(obj.microstructure);
             obj.microstructure = obj.microstructure.ms;
-
-            parameter_data = strcat('micro_',obj.parameter);  
-            if strcmp(obj.parameter,'visc') || strcmp(obj.parameter,'pdd') == 1
-                obj.target_data = eval(strcat(parameter_data,'{', ...
-                    num2str(obj.tempInterval),',', ...
-                    num2str(obj.stressStrainInterval),'}'));
+            obj.target_data = obj.microstructure.(parameter_data);
+            if strcmp(obj.parameter,'Vicsosity') || ...
+                    strcmp(obj.parameter,'PowerDissipationDensity') == 1
+                obj.target_data = obj.target_data{obj.tempInterval};
             else
-                if strcmp(obj.parameter,'stress') || strcmp(obj.parameter,'strain') == 1
-                    obj.target_data = eval(strcat(parameter_data,'{',...
-                        num2str(obj.tempInterval),',', ...
-                        num2str(obj.stressStrainInterval),',', ...
-                        num2str(obj.kValue),'}'));
+                if strcmp(obj.parameter,'Stress') || strcmp(obj.parameter,'Strain') == 1
+                    obj.target_data = obj.target_data{obj.kValue,obj.tempInterval};
                 else
                     error('k-value must be included if the parameter of interest is stress or strain')
                 end
             end
+            obj.target_data = obj.target_data(:,obj.stressStrainInterval);
         end
        
        
