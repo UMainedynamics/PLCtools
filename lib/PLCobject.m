@@ -1,10 +1,17 @@
 classdef PLCobject
    properties
+       microstructure
        parameter
+       parameter_data
+       gridded_data
+       datatable
+       xgrid
+       ygrid
        tempInterval
        stressStrainInterval
        kValue
-       microstructure
+       msResolution
+       coords
        total_size
        real_size
        varmag_component
@@ -38,6 +45,7 @@ classdef PLCobject
        grains
        graincount
        phases
+       elemphases
        phasescount
        phasesnulled
        null_coords
@@ -49,30 +57,41 @@ classdef PLCobject
        function obj = PLCobject(parameter, tempInterval, ...
                stressStrainInterval, varargin)
         % Requires as input arguments the parameter of interest 
-        % ('stress' 'strain' 'visc' or 'pdd'), temperature interval, 
-        % stress-strain interval, and k-value.
+        % ('Stress' 'Strain' 'Viscosity' or 'PowerDissipationDensity'), 
+        % temperature interval, stress-strain interval, and k-value.
         %
         % EXAMPLE : loadPLCdata('parameter','stress', ...
         % 'tempInterval',1,'stressStrainInterval',1, ...
-        % 'kValue',10);
+        % 'kValue',10,'nullPhases',2);
             expectedParameters = {'Stress','Strain','Viscosity', ...
                 'PowerDissipationDensity'};
-            
+            defaultResolution = 100;
+            defaultNullPhases = NaN;
+            defaultBoundaryFitness = 1;
             p = inputParser;
                 validScalarPosNum = @(x) isnumeric(x) && isscalar(x) && (x > 0);
                 validKvalues = @(x) isnumeric(x) && isscalar(x) && (x > 0) && (x <= 11);
-%                 p.Results.FunctionName = 'loadPLCdata';
+                validFitness = @(x) isnumeric(x) && isscalar(x) && (x > 0) && (x <= 1);
                 addRequired(p,'parameter', ...
                     @(x) any(validatestring(x,expectedParameters)));
                 addRequired(p,'tempInterval',validScalarPosNum);
                 addRequired(p,'stressStrainInterval',validScalarPosNum)
                 addParameter(p,'kValue', validKvalues);
+                addParameter(p,'resolution',defaultResolution, ...
+                    validScalarPosNum);
+                addParameter(p,'nullPhases', defaultNullPhases, ...
+                    validScalarPosNum);
+                addParameter(p,'boundaryFitness', defaultBoundaryFitness, ...
+                    validFitness);
             parse(p, parameter, tempInterval, ...
                stressStrainInterval, varargin{:});
             obj.parameter = p.Results.parameter;
             obj.tempInterval = p.Results.tempInterval;
             obj.stressStrainInterval = p.Results.stressStrainInterval;
             obj.kValue = p.Results.kValue;
+            obj.msResolution = p.Results.resolution;
+            obj.phasesnulled = p.Results.nullPhases;
+            boundaryFitness = p.Results.boundaryFitness;
             
             % Load the data from the microstructure field
             obj = loadPLCdata(obj);
@@ -80,12 +99,32 @@ classdef PLCobject
             % Retrieve grain and phase info from the microstructure field
             obj.grains = obj.microstructure.Grains;
             obj.phases = obj.microstructure.GrainPhases;
-            obj.graincount = size((obj.grains),2);
-            % count the number of individual grains
-            obj.phasescount = size(unique(obj.phases),1);
-            % count distinct phases are in the list of grains
-            obj.target_data = flipud(obj.target_data);
-            obj.total_size = floor(size(obj.target_data));
+            obj.elemphases = obj.microstructure.ElementPhases;
+            obj.coords = obj.microstructure.MicroCoordinates / ...
+                max(obj.microstructure.MicroCoordinates(:));
+            data_map = [obj.coords, obj.target_data];
+            obj.datatable = array2table(data_map, 'VariableNames', ...
+                {'x','y',obj.parameter});
+            F = scatteredInterpolant(obj.datatable.x,obj.datatable.y, ...
+                obj.datatable.(obj.parameter));
+            max_x = max(obj.datatable.x);
+            max_y = max(obj.datatable.y);
+            [obj.xgrid,obj.ygrid] = meshgrid(linspace(0,max_x,max_x*obj.msResolution), ...
+                linspace(0,max_y,max_x*obj.msResolution));
+            obj.gridded_data = F(obj.xgrid,obj.ygrid);
+
+            if isnan(obj.phasesnulled) ~= 1
+                [row_elem,~] = find(obj.elemphases == obj.phasesnulled);
+                mst_mask = data_map(row_elem,:);
+                mst_mask_table = array2table(mst_mask,...
+                'VariableNames',{'x','y',obj.parameter});
+                xv = mst_mask_table.x;
+                yv = mst_mask_table.y;
+                k = boundary(xv,yv,boundaryFitness);
+                [in,on] = inpolygon(obj.xgrid,obj.ygrid,xv(k),yv(k));
+                obj.gridded_data(in) = NaN;
+                obj.gridded_data(on) = NaN;
+            end
        end
        
        
@@ -94,24 +133,31 @@ classdef PLCobject
             run_name_delimiter = '_';
             fname_components = strsplit(microstress.name, ...
                 run_name_delimiter);
-            parameter_data = strcat('Micro',obj.parameter);
+            obj.parameter_data = strcat('Micro',obj.parameter);
             obj.microstructure = strcat(strjoin( ...
                 fname_components(1:end-3),'_'),'.mat');
             obj.microstructure = load(obj.microstructure);
             obj.microstructure = obj.microstructure.ms;
-            obj.target_data = obj.microstructure.(parameter_data);
+            obj.target_data = obj.microstructure.(obj.parameter_data);
             if strcmp(obj.parameter,'Vicsosity') || ...
                     strcmp(obj.parameter,'PowerDissipationDensity') == 1
                 obj.target_data = obj.target_data{obj.tempInterval};
             else
-                if strcmp(obj.parameter,'Stress') || strcmp(obj.parameter,'Strain') == 1
+                if strcmp(obj.parameter,'Stress') || ...
+                        strcmp(obj.parameter,'Strain') == 1
                     obj.target_data = obj.target_data{obj.kValue,obj.tempInterval};
                 else
                     error('k-value must be included if the parameter of interest is stress or strain')
                 end
             end
             obj.target_data = obj.target_data(:,obj.stressStrainInterval);
-        end
+       end
+        
+       
+       function plotPLC(obj)
+           h = pcolor(obj.xgrid,obj.ygrid,obj.gridded_data);
+           h.EdgeColor = 'none';
+       end
        
        
        function obj = CalculateGradient(obj, cutlinelength, varargin)
@@ -264,8 +310,8 @@ classdef PLCobject
        % values corresponding to phases, subtract those phases
        % from the area in which the gradient is calculated
             coords = ms.MicroCoordinates/max(ms.MicroCoordinates(:));
-            mst =[coords, ms.MicroStress{10, 1}(:,end)];
-            mst_table = array2table(mst, ...
+            data_map =[coords, ms.MicroStress{10, 1}(:,end)];
+            obj.datatable = array2table(data_map, ...
                 'VariableNames',{'x','y','stress'});
             [grainRow,~] = find(obj.phases==obj.phasesnulled);
             for i = grainRow'

@@ -1,7 +1,7 @@
 user = 'NWRichmond'; % 'Peter Koons' for work pc or 'NWRichmond' for home pc
 plc_case = 'Fold3cgsm30_2m_9d_11h_59m';
 cd(strcat('C:\Users\', ...
-    user,'\Documents\GitHub\PLCtools\', ...
+    user, '\Documents\GitHub\PLCtools\', ...
     'DEMO_DATA\',plc_case));
 load('Fold3cgsm30.mat')
 resolution = 100;
@@ -26,13 +26,14 @@ cq = F(xq,yq);
 
 xGrain = [ms.Grains{1, row}(:,1),ms.Grains{1, row}(:,2)];
 xGrainNorm = xGrain/max(xGrain(:));
-xv = xGrainNorm(:,1);
-yv = xGrainNorm(:,2);
-[in,on] = inpolygon(xq,yq,xv,yv);
+xv = mst_mask_table.x;
+yv = mst_mask_table.y;
+k = boundary(xv,yv,1);
+[in,on] = inpolygon(xq,yq,xv(k),yv(k));
 cq(in) = NaN;
 cq(on) = NaN;
 
-h = pcolor(xq,yq,gradient(cq));
+h = pcolor(xq,yq,cq);
 h.EdgeColor = 'none';
 
 % hold on
