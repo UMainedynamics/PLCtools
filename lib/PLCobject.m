@@ -110,8 +110,9 @@ classdef PLCobject
             max_x = max(obj.datatable.x);
             max_y = max(obj.datatable.y);
             [obj.xgrid,obj.ygrid] = meshgrid(linspace(0,max_x,max_x*obj.msResolution), ...
-                linspace(0,max_y,max_x*obj.msResolution));
+                linspace(0,max_y,max_y*obj.msResolution));
             obj.gridded_data = F(obj.xgrid,obj.ygrid);
+            obj.total_size = [max(obj.coords(:,1)), max(obj.coords(:,2))];
 
             if isnan(obj.phasesnulled) ~= 1
                 [row_elem,~] = find(obj.elemphases == obj.phasesnulled);
@@ -152,11 +153,15 @@ classdef PLCobject
             end
             obj.target_data = obj.target_data(:,obj.stressStrainInterval);
        end
-        
        
-       function plotPLC(obj)
-           h = pcolor(obj.xgrid,obj.ygrid,obj.gridded_data);
-           h.EdgeColor = 'none';
+       
+       function plothandle = plot(obj, fighandle)
+           plothandle = PLCplot(fighandle,obj);
+       end
+       
+       
+       function plothandle = subplot(obj, fighandle, m, n, p, plcData)
+           plothandle = PLCsubplot(fighandle,m,n,p,obj,plcData);
        end
        
        
