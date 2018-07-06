@@ -1,10 +1,10 @@
 % These functions allow for the use of the Data Cursor to pull information
 % from the plc object and plot it alongside its normalized coordinates.
 
-function plothandle = PLCplot(fighandle,plcobj)
+function plothandle = PLCplot(fighandle,plcobj,plcData)
 % Plots graph and sets up a custom data tip update function
 % for a plot with one component
-plothandle = pcolor(plcobj.xgrid,plcobj.ygrid,plcobj.gridded_data);
+plothandle = pcolor(plcobj.xgrid,plcobj.ygrid,plcData);
 plothandle.EdgeColor = 'none';
 dcm_obj = datacursormode(fighandle);
 set(dcm_obj,'UpdateFcn',{@PlotDataCursorText,plcobj})
