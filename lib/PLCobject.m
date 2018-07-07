@@ -169,22 +169,13 @@ classdef PLCobject
        end
        
        
-       function obj = CalculateGradient(obj, varargin)
+       function obj = CalculateGradient(obj)
        % Calculate the gradient of the parameter of interest as defined
-       % by the obj.gridded_data data. Adding another argument allows masking of
-       % grains by phase number.
+       % by the obj.gridded_data data.
        %
-       % EXAMPLE 1: obj(i) = obj(i).CalculateGradient
-       % EXAMPLE 2: obj(i) = obj(i).CalculateGradient(2)
-       % ---> this example masks the grains with a phase number of 2
+       % EXAMPLE: obj(i) = obj(i).CalculateGradient
             [obj.grad_x,obj.grad_y] = gradient(obj.gridded_data,1);
-            obj.parameter_gradient = sqrt((obj.grad_x).^2+(obj.grad_y).^2);
-            
-            if size(varargin,2) == 2
-                obj.phasesnulled = varargin{1};
-                obj = obj.MaskPhases;
-            end
-            
+            obj.parameter_gradient = sqrt((obj.grad_x).^2+(obj.grad_y).^2);       
             obj.max_gradient = max(obj.parameter_gradient(:));
        end
        
@@ -239,15 +230,14 @@ classdef PLCobject
                         graddist(i)+1,'bilinear'); % find the values along 
                         % the line of cross section
                     gradline(:,i) = smooth(gradline(:,i),'moving');
-%                     gradlinesum(i) = peak2peak(obj.gridded_data(gradlinerow(:,i),gradlinecol(:,i)));
-%                     gradlinesum(i) = peak2peak(gradline(:,i));
                 end
        end
 
            
-       function obj = CutLineMaxGradient(obj)
+       function obj = CutLineMaxGradient(obj, cutlinelength)
        % Solve for the cut line across the max gradient of the parameter of
-       % interest.      
+       % interest.
+            obj.cutlinelength = obj.Denormalize(cutlinelength);
             [maxgradrow,maxgradcol] = find(obj.parameter_gradient == obj.max_gradient);
             obj.max_gradient_row = maxgradrow;
             obj.max_gradient_col = maxgradcol;
@@ -305,9 +295,7 @@ classdef PLCobject
        
        
        function obj = CutLineGradient(obj)
-           % When using vertices
-
-            
+           % Return the gradient cut line using manual vertices
             obj.gradient_cutline = smooth(improfile(obj.parameter_gradient, ...
                 [obj.vx1,obj.vx2], [obj.vy1,obj.vy2], obj.vertex_distance+1, ...
                 'bilinear'),'moving');  % find the values along the line
@@ -316,29 +304,31 @@ classdef PLCobject
 
        
        
-      function obj = SetCutLine(obj, varargin)
-       % Either use the object's vertices as defined in another method
-       % (such as CutLineMaxGradient) or provide vertices as an input
-       % argument as a 2x2 double with the initial x1,y1;x2,y2
+      function obj = SetCutLine(obj, cutline)
+       % Sets the cut line vertices. Either provide a cut line length 
+       % or provide vertices as an input argument as a 2x2 double 
+       % in the format:s [x1,y1;x2,y2]
        %
        % EXAMPLE 1:
-       %    obj.SetCutLine
+       %    cut_line_length = 0.2
+       %    obj.SetCutLine(cut_line_length)
        %
        % EXAMPLE 2: 
        %    xcv = [0,0.5;...
        %          1,0.5]
        %    obj.SetCutLine(xcv)
        %
-           switch nargin           
-               case 2
-                verts = varargin{1};
-                obj.vx1 = obj.Denormalize(verts(1,1),'x');
-                obj.vy1 = obj.Denormalize(verts(1,2),'y');
-                obj.vx2 = obj.Denormalize(verts(2,1),'x');
-                obj.vy2 = obj.Denormalize(verts(2,2),'y');
-                obj.xc_x = [verts(1,1),verts(2,1)];
-                obj.xc_y = [verts(1,2),verts(2,2)];
-           end
+        if size(cutline) == 1
+            obj = obj.CutLineMaxGradient(cutline);
+        elseif size(cutline) == 2
+            verts = cutline;
+            obj.vx1 = obj.Denormalize(verts(1,1));
+            obj.vy1 = obj.Denormalize(verts(1,2));
+            obj.vx2 = obj.Denormalize(verts(2,1));
+            obj.vy2 = obj.Denormalize(verts(2,2));
+        end
+            obj.xc_x = [obj.vx1,obj.vx2];
+            obj.xc_y = [obj.vy1,obj.vy2];
             obj.cut_line_v1 = [obj.vx1,obj.vy1]; % cartesian coordinates for
                 % the 1st vertex of the cut line / line of cross section
             obj.cut_line_v2 = [obj.vx2,obj.vy2]; % cartesian coordinates for
@@ -386,54 +376,34 @@ classdef PLCobject
             origin = [0.5,0.5];
             obj.theta = theta;
             obj.vx1 = obj.Denormalize((((xcv(1,1)-origin(1,1))*cos((i-1)*theta)) - ...
-                ((xcv(1,2)-origin(1,2))*sin((i-1)*theta)))+origin(1,1),'x');
+                ((xcv(1,2)-origin(1,2))*sin((i-1)*theta)))+origin(1,1));
             obj.vy1 = obj.Denormalize((((xcv(1,2)-origin(1,2))*cos((i-1)*theta)) + ...
-                ((xcv(1,1)-origin(1,1))*sin((i-1)*theta)))+origin(1,2),'y');
+                ((xcv(1,1)-origin(1,1))*sin((i-1)*theta)))+origin(1,2));
             obj.vx2 = obj.Denormalize((((xcv(2,1)-origin(1,1))*cos((i-1)*theta)) - ...
-                ((xcv(2,2)-origin(1,2))*sin((i-1)*theta)))+origin(1,1),'x');
+                ((xcv(2,2)-origin(1,2))*sin((i-1)*theta)))+origin(1,1));
             obj.vy2 = obj.Denormalize((((xcv(2,2)-origin(1,2))*cos((i-1)*theta)) + ...
-                ((xcv(2,1)-origin(1,1))*sin((i-1)*theta)))+origin(1,2),'y');
+                ((xcv(2,1)-origin(1,1))*sin((i-1)*theta)))+origin(1,2));
            else
                error('"i" , "theta" , and "xcv" must be included in the RotateByTheta method call')
            end
        end
        
        
-       function var_norm = Normalize(obj,var,dimension)
+       function var_norm = Normalize(obj,var)
        % Convert native spatial units to 0-to-1 spatial units
        %
        % EXAMPLE:
-       %     nx1 = obj.Normalize(obj.vx1,'x');
-       %     ny1 = obj.Normalize(obj.vy1,'y');
-       %     nx2 = obj.Normalize(obj.vx2,'x');
-       %     ny2 = obj.Normalize(obj.vy2,'y');
-
-           if strcmp(dimension,'X') == 1 || strcmp(dimension,'x') == 1
-               var_norm = var / (obj.total_size(1,1)-1);
-           elseif strcmp(dimension,'Y') == 1 || strcmp(dimension,'y') == 1
-               var_norm = var / (obj.total_size(1,2)-1);
-           else
-               error('the dimension must be provided as X, x, Y, or y')
-           end
+       %     nx1 = obj.Normalize(cut_line_length);
+           var_norm = var / max(obj.gridded_size);
        end
        
        
-      function var_norm = Denormalize(obj,var,dimension)
+      function var_norm = Denormalize(obj,var)
       % Convert 0-to-1 spatial units to native spatial units
       %
       % EXAMPLE:
-      %     dx1 = obj.Denormalize(obj.vx1,'x');
-      %     dy1 = obj.Denormalize(obj.vy1,'y');
-      %     dx2 = obj.Denormalize(obj.vx2,'x');
-      %     dy2 = obj.Denormalize(obj.vy2,'y');
-
-           if strcmp(dimension,'X') == 1 || strcmp(dimension,'x') == 1
-               var_norm = var * (obj.gridded_size(1,1));
-           elseif strcmp(dimension,'Y') == 1 || strcmp(dimension,'y') == 1
-               var_norm = var * (obj.gridded_size(1,2));
-           else
-               error('the dimension must be provided as X, x, Y, or y')
-           end
+      %     dx1 = obj.Denormalize(obj.vx1);
+           var_norm = var * max(obj.gridded_size);
       end
       
       
@@ -453,49 +423,5 @@ classdef PLCobject
             error('The current threshold value resulted in a null grain matrix')
         end
       end
-      
-      
-%        function obj = GradientLineTranslation(obj)
-%             alpha = pi/36; % angle of rotation in radians (pi/144 is default)
-%             graddist = zeros(2*pi/alpha,1);
-%             gradline = zeros(obj.cutlinelength+1,2*pi/alpha);
-%             gradlinesum = zeros(1,2*pi/alpha);
-%             i_coords = zeros(2*pi/alpha,4);
-%             ix1 = zeros(2*pi/alpha,1);
-%             iy1 = zeros(2*pi/alpha,1);
-%             ix2 = zeros(2*pi/alpha,1);
-%             iy2 = zeros(2*pi/alpha,1);
-%                 for i = 1:(2*pi/alpha)
-%                     beta = i*alpha;
-%                     x1 = obj.vxcenter;
-%                     x2 = obj.vxcenter;
-%                     y1 = obj.vycenter + (obj.cutlinelength/2);
-%                     y2 = obj.vycenter - (obj.cutlinelength/2);
-%                     xcv = [x1,y1;...
-%                           x2,y2];
-%                     origin = [obj.vxcenter,obj.vycenter];
-%                     ix1(i) = (((xcv(1,1)-origin(1,1))*cos((i-1)*beta)) - ...
-%                         ((xcv(1,2)-origin(1,2))*sin((i-1)*beta)))+origin(1,1);
-%                     iy1(i) = (((xcv(1,2)-origin(1,2))*cos((i-1)*beta)) + ...
-%                         ((xcv(1,1)-origin(1,1))*sin((i-1)*beta)))+origin(1,2);
-%                     ix2(i) = (((xcv(2,1)-origin(1,1))*cos((i-1)*beta)) - ...
-%                         ((xcv(2,2)-origin(1,2))*sin((i-1)*beta)))+origin(1,1);
-%                     iy2(i) = (((xcv(2,2)-origin(1,2))*cos((i-1)*beta)) + ...
-%                         ((xcv(2,1)-origin(1,1))*sin((i-1)*beta)))+origin(1,2);
-%                     i_coords = [ix1, iy1, ix2, iy2];
-%                     
-%                     graddist(i,1) = round(pdist([ix1(i),iy1(i);...
-%                         ix2(i),iy2(i)],'euclidean'));
-%                     
-%                     [gradlinecol,gradlinerow,gradline(:,i)] = improfile(...
-%                         obj.parameter_gradient,[ix1(i),ix2(i)],[iy1(i),iy2(i)],...
-%                         graddist(i)+1,'bilinear'); % find the values along 
-%                         % the line of cross section
-%                     gradline(:,i) = smooth(gradline(:,i),'moving');
-%                     gradlinesum(i) = sum(gradline(:,i));
-%                 end
-%        end
-
-      
    end
 end
