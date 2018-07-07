@@ -1,21 +1,22 @@
 % These functions allow for the use of the Data Cursor to pull information
 % from the plc object and plot it alongside its normalized coordinates.
 
-function plothandle = PLCplot(fighandle,plcobj,param)
+function plothandle = PLCplot(fighandle,plcobj,plcData)
 % Plots graph and sets up a custom data tip update function
 % for a plot with one component
-plothandle = imagesc(param);
+plothandle = pcolor(plcobj.xgrid,plcobj.ygrid,plcData);
+plothandle.EdgeColor = 'none';
 dcm_obj = datacursormode(fighandle);
-set(dcm_obj,'UpdateFcn',{@PlotDataCursorText,plcobj,param})
+set(dcm_obj,'UpdateFcn',{@PlotDataCursorText,plcobj})
 end
 
-function txt = PlotDataCursorText(~,event_obj,plcobj,param)
+function txt = PlotDataCursorText(~,event_obj,plcobj)
 % Customizes text of data tips
-obj_size_x = plcobj.total_size(1);
-obj_size_y = plcobj.total_size(2);
 pos = get(event_obj,'Position');
 txt = {...
-    ['X: ',num2str(round(pos(1))/obj_size_x)],...
-    ['Y: ',num2str(1-(round(pos(2))/obj_size_y))],...
-    ['Value: ',sprintf('%.2e',param(pos(2),pos(1)))]};
+    ['X: ',num2str(pos(1))],...
+    ['Y: ',num2str(pos(2))],...
+    ['Value: ', sprintf('%.2e',plcobj.gridded_data( ...
+        round((pos(2)/max(plcobj.total_size))*plcobj.msResolution), ...
+        round((pos(1)/max(plcobj.total_size))*plcobj.msResolution)))]};
 end

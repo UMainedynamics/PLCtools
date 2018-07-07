@@ -1,0 +1,1307 @@
+--- AEH Shear Flow Analysis --- ACC
+Applied stress analysis started on Fri Feb 09 11:57:05 2018
+
+_______________________________________________________
+
+Reading in data files... Done.
+
+--------------------------------------------
+FE Mesh Information: 
+Number of nodes in model = 9857
+Number of elements in model = 4814
+Number of grains in model = 3
+Number of macroscale stress intervals = 2
+--------------------------------------------
+
+Allocating memory for storage... 
+Done.
+
+Setting initial microscale stresses and viscosities
+Done.
+
+Computing element shape function matrices and quad-point jacobians
+
+*** Computing initial fields using first set of stresses =  ***
+
+Iteration #1Stage #1, Iter. #2, Init. stress inv. = 30, Max. rel. diff. = 1
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  6.31329e+013
+Min. Micro Viscosity        =  4.41098e+011
+
+Max. Micro strain rate Inv. =  4.43963e-011
+Min. Micro strain rate Inv. =  1.88271e-014
+
+Max. Micro Stress Inv.      =  158.244
+Min. Micro Stress Inv.      =  0.280761
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #3, Init. stress inv. = 30, Max. rel. diff. = 0.29845
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.77287e+013
+Min. Micro Viscosity        =  4.52446e+011
+
+Max. Micro strain rate Inv. =  4.3385e-011
+Min. Micro strain rate Inv. =  1.85027e-013
+
+Max. Micro Stress Inv.      =  70.2889
+Min. Micro Stress Inv.      =  7.23341
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #4, Init. stress inv. = 30, Max. rel. diff. = 0.0721927
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.61071e+013
+Min. Micro Viscosity        =  4.64067e+011
+
+Max. Micro strain rate Inv. =  4.03243e-011
+Min. Micro strain rate Inv. =  2.22031e-013
+
+Max. Micro Stress Inv.      =  61.3061
+Min. Micro Stress Inv.      =  12.2854
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #5, Init. stress inv. = 30, Max. rel. diff. = 0.0434861
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.23798e+013
+Min. Micro Viscosity        =  4.68993e+011
+
+Max. Micro strain rate Inv. =  3.82371e-011
+Min. Micro strain rate Inv. =  2.60189e-013
+
+Max. Micro Stress Inv.      =  58.451
+Min. Micro Stress Inv.      =  14.6469
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #6, Init. stress inv. = 30, Max. rel. diff. = 0.0284445
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.18556e+013
+Min. Micro Viscosity        =  4.725e+011
+
+Max. Micro strain rate Inv. =  3.7834e-011
+Min. Micro strain rate Inv. =  2.68104e-013
+
+Max. Micro Stress Inv.      =  57.2039
+Min. Micro Stress Inv.      =  14.9525
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #7, Init. stress inv. = 30, Max. rel. diff. = 0.0194874
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.16498e+013
+Min. Micro Viscosity        =  4.74771e+011
+
+Max. Micro strain rate Inv. =  3.75782e-011
+Min. Micro strain rate Inv. =  2.70809e-013
+
+Max. Micro Stress Inv.      =  56.563
+Min. Micro Stress Inv.      =  15.0709
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #8, Init. stress inv. = 30, Max. rel. diff. = 0.0137391
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.16049e+013
+Min. Micro Viscosity        =  4.76182e+011
+
+Max. Micro strain rate Inv. =  3.74211e-011
+Min. Micro strain rate Inv. =  2.67173e-013
+
+Max. Micro Stress Inv.      =  56.2031
+Min. Micro Stress Inv.      =  15.1405
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #9, Init. stress inv. = 30, Max. rel. diff. = 0.00986524
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.1949e+013
+Min. Micro Viscosity        =  4.77036e+011
+
+Max. Micro strain rate Inv. =  3.73265e-011
+Min. Micro strain rate Inv. =  2.56115e-013
+
+Max. Micro Stress Inv.      =  55.9904
+Min. Micro Stress Inv.      =  15.1847
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #10, Init. stress inv. = 30, Max. rel. diff. = 0.00716879
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.26764e+013
+Min. Micro Viscosity        =  4.77534e+011
+
+Max. Micro strain rate Inv. =  3.72706e-011
+Min. Micro strain rate Inv. =  2.48172e-013
+
+Max. Micro Stress Inv.      =  55.8605
+Min. Micro Stress Inv.      =  15.2126
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #11, Init. stress inv. = 30, Max. rel. diff. = 0.00525119
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.32384e+013
+Min. Micro Viscosity        =  4.77724e+011
+
+Max. Micro strain rate Inv. =  3.72382e-011
+Min. Micro strain rate Inv. =  2.42412e-013
+
+Max. Micro Stress Inv.      =  55.7794
+Min. Micro Stress Inv.      =  15.2304
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #12, Init. stress inv. = 30, Max. rel. diff. = 0.00386774
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.36608e+013
+Min. Micro Viscosity        =  4.77828e+011
+
+Max. Micro strain rate Inv. =  3.72199e-011
+Min. Micro strain rate Inv. =  2.38209e-013
+
+Max. Micro Stress Inv.      =  55.7279
+Min. Micro Stress Inv.      =  15.2418
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #13, Init. stress inv. = 30, Max. rel. diff. = 0.00285985
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.39773e+013
+Min. Micro Viscosity        =  4.77882e+011
+
+Max. Micro strain rate Inv. =  3.72111e-011
+Min. Micro strain rate Inv. =  2.35127e-013
+
+Max. Micro Stress Inv.      =  55.6946
+Min. Micro Stress Inv.      =  15.2492
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #14, Init. stress inv. = 30, Max. rel. diff. = 0.00212055
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.42137e+013
+Min. Micro Viscosity        =  4.77905e+011
+
+Max. Micro strain rate Inv. =  3.72082e-011
+Min. Micro strain rate Inv. =  2.32859e-013
+
+Max. Micro Stress Inv.      =  55.673
+Min. Micro Stress Inv.      =  15.254
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #15, Init. stress inv. = 30, Max. rel. diff. = 0.00157564
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.439e+013
+Min. Micro Viscosity        =  4.77911e+011
+
+Max. Micro strain rate Inv. =  3.72073e-011
+Min. Micro strain rate Inv. =  2.31187e-013
+
+Max. Micro Stress Inv.      =  55.6587
+Min. Micro Stress Inv.      =  15.2572
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #16, Init. stress inv. = 30, Max. rel. diff. = 0.00117259
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.45212e+013
+Min. Micro Viscosity        =  4.77909e+011
+
+Max. Micro strain rate Inv. =  3.72074e-011
+Min. Micro strain rate Inv. =  2.29952e-013
+
+Max. Micro Stress Inv.      =  55.6492
+Min. Micro Stress Inv.      =  15.2593
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #17, Init. stress inv. = 30, Max. rel. diff. = 0.000873699
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.46188e+013
+Min. Micro Viscosity        =  4.77902e+011
+
+Max. Micro strain rate Inv. =  3.72081e-011
+Min. Micro strain rate Inv. =  2.29038e-013
+
+Max. Micro Stress Inv.      =  55.6428
+Min. Micro Stress Inv.      =  15.2607
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #18, Init. stress inv. = 30, Max. rel. diff. = 0.000651604
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.46914e+013
+Min. Micro Viscosity        =  4.77893e+011
+
+Max. Micro strain rate Inv. =  3.72089e-011
+Min. Micro strain rate Inv. =  2.28361e-013
+
+Max. Micro Stress Inv.      =  55.6385
+Min. Micro Stress Inv.      =  15.2617
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #19, Init. stress inv. = 30, Max. rel. diff. = 0.000486328
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.47453e+013
+Min. Micro Viscosity        =  4.77884e+011
+
+Max. Micro strain rate Inv. =  3.72098e-011
+Min. Micro strain rate Inv. =  2.27859e-013
+
+Max. Micro Stress Inv.      =  55.6355
+Min. Micro Stress Inv.      =  15.2623
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #20, Init. stress inv. = 30, Max. rel. diff. = 0.000363189
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.47853e+013
+Min. Micro Viscosity        =  4.77876e+011
+
+Max. Micro strain rate Inv. =  3.72107e-011
+Min. Micro strain rate Inv. =  2.27487e-013
+
+Max. Micro Stress Inv.      =  55.6335
+Min. Micro Stress Inv.      =  15.2627
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #21, Init. stress inv. = 30, Max. rel. diff. = 0.00027136
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.48151e+013
+Min. Micro Viscosity        =  4.77869e+011
+
+Max. Micro strain rate Inv. =  3.72114e-011
+Min. Micro strain rate Inv. =  2.27211e-013
+
+Max. Micro Stress Inv.      =  55.6321
+Min. Micro Stress Inv.      =  15.263
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #22, Init. stress inv. = 30, Max. rel. diff. = 0.000202828
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.48372e+013
+Min. Micro Viscosity        =  4.77863e+011
+
+Max. Micro strain rate Inv. =  3.72121e-011
+Min. Micro strain rate Inv. =  2.27006e-013
+
+Max. Micro Stress Inv.      =  55.6311
+Min. Micro Stress Inv.      =  15.2632
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #23, Init. stress inv. = 30, Max. rel. diff. = 0.000151653
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.48536e+013
+Min. Micro Viscosity        =  4.77858e+011
+
+Max. Micro strain rate Inv. =  3.72126e-011
+Min. Micro strain rate Inv. =  2.26854e-013
+
+Max. Micro Stress Inv.      =  55.6304
+Min. Micro Stress Inv.      =  15.2633
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #24, Init. stress inv. = 30, Max. rel. diff. = 0.00011342
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.48658e+013
+Min. Micro Viscosity        =  4.77854e+011
+
+Max. Micro strain rate Inv. =  3.7213e-011
+Min. Micro strain rate Inv. =  2.2674e-013
+
+Max. Micro Stress Inv.      =  55.6299
+Min. Micro Stress Inv.      =  15.2634
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #25, Init. stress inv. = 30, Max. rel. diff. = 8.48454e-005
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.48748e+013
+Min. Micro Viscosity        =  4.77851e+011
+
+Max. Micro strain rate Inv. =  3.72134e-011
+Min. Micro strain rate Inv. =  2.26656e-013
+
+Max. Micro Stress Inv.      =  55.6296
+Min. Micro Stress Inv.      =  15.2634
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #26, Init. stress inv. = 30, Max. rel. diff. = 6.34815e-005
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.48816e+013
+Min. Micro Viscosity        =  4.77848e+011
+
+Max. Micro strain rate Inv. =  3.72137e-011
+Min. Micro strain rate Inv. =  2.26594e-013
+
+Max. Micro Stress Inv.      =  55.6294
+Min. Micro Stress Inv.      =  15.2635
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #27, Init. stress inv. = 30, Max. rel. diff. = 4.75046e-005
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.48866e+013
+Min. Micro Viscosity        =  4.77846e+011
+
+Max. Micro strain rate Inv. =  3.72139e-011
+Min. Micro strain rate Inv. =  2.26547e-013
+
+Max. Micro Stress Inv.      =  55.6292
+Min. Micro Stress Inv.      =  15.2635
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #28, Init. stress inv. = 30, Max. rel. diff. = 3.55535e-005
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.48903e+013
+Min. Micro Viscosity        =  4.77844e+011
+
+Max. Micro strain rate Inv. =  3.72141e-011
+Min. Micro strain rate Inv. =  2.26513e-013
+
+Max. Micro Stress Inv.      =  55.6291
+Min. Micro Stress Inv.      =  15.2635
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #29, Init. stress inv. = 30, Max. rel. diff. = 2.66122e-005
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.48931e+013
+Min. Micro Viscosity        =  4.77843e+011
+
+Max. Micro strain rate Inv. =  3.72142e-011
+Min. Micro strain rate Inv. =  2.26487e-013
+
+Max. Micro Stress Inv.      =  55.629
+Min. Micro Stress Inv.      =  15.2635
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #30, Init. stress inv. = 30, Max. rel. diff. = 1.99215e-005
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.48951e+013
+Min. Micro Viscosity        =  4.77842e+011
+
+Max. Micro strain rate Inv. =  3.72143e-011
+Min. Micro strain rate Inv. =  2.26468e-013
+
+Max. Micro Stress Inv.      =  55.6289
+Min. Micro Stress Inv.      =  15.2635
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #31, Init. stress inv. = 30, Max. rel. diff. = 1.49143e-005
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.48966e+013
+Min. Micro Viscosity        =  4.77841e+011
+
+Max. Micro strain rate Inv. =  3.72144e-011
+Min. Micro strain rate Inv. =  2.26454e-013
+
+Max. Micro Stress Inv.      =  55.6289
+Min. Micro Stress Inv.      =  15.2635
+----------------------------------------------------------------------------------------
+
+
+Stage #1, Iter. #32, Init. stress inv. = 30, Max. rel. diff. = 1.11664e-005
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.48978e+013
+Min. Micro Viscosity        =  4.77841e+011
+
+Max. Micro strain rate Inv. =  3.72145e-011
+Min. Micro strain rate Inv. =  2.26443e-013
+
+Max. Micro Stress Inv.      =  55.6288
+Min. Micro Stress Inv.      =  15.2635
+----------------------------------------------------------------------------------------
+
+
+*** Converged in 32 iterations for initial set of strain rates                         
+  Max. rel. diff. in grain average viscosity     = 5.63247e-006
+  Max. rel. diff. in grain strain rate invariant = 8.36097e-006
+  Max. rel. diff. in grain stress invariant      = 5.34311e-009
+
+----------------------------------------------------------------------
+
+*** Calculating fields over the range of stresses ***
+
+Beginning stresses # 1
+
+Stage #3, Iteration #1, Stress Invariant = 30
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  3.48993e+013
+Min. Micro Viscosity        =  4.7784e+011
+
+Max. Micro strain rate Inv. =  3.72146e-011
+Min. Micro strain rate Inv. =  2.26429e-013
+
+Max. Micro Stress Inv.      =  55.6288
+Min. Micro Stress Inv.      =  15.2636
+
+Max. Viscosity Diff   =   4.63331e-006
+Max. strain rate Diff =   6.26071e-006
+Max. Stress Diff      =   5.69157e-009
+
+Macro Stress Inv.      =   30
+Macro strain rate Inv. =   1.15398e-011
+Effective Viscosity    =   1.29985e+012
+----------------------------------------------------------------------------------------
+
+
+*** Converged in 1 iterations for stress invariant of 30                         
+Statistics: 
+  Max. rel. diff. in grain average viscosity     = 4.63331e-006
+  Max. rel. diff. in grain strain rate invariant = 6.26071e-006
+  Max. rel. diff. in grain stress invariant      = 5.69157e-009
+
+Beginning stress invariant # 2
+
+Stage #3, Iteration #1, Stress Invariant = 50
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  2.37922e+013
+Min. Micro Viscosity        =  3.25758e+011
+
+Max. Micro strain rate Inv. =  6.20243e-011
+Min. Micro strain rate Inv. =  3.77375e-013
+
+Max. Micro Stress Inv.      =  92.7147
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.466858
+Max. strain rate Diff =   0.400003
+Max. Stress Diff      =   0.4
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   1.92331e-011
+Effective Viscosity    =   1.29985e+012
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #2, Stress Invariant #2 = 50, Max. rel. diff. = 0.466858
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  1.78505e+013
+Min. Micro Viscosity        =  2.44402e+011
+
+Max. Micro strain rate Inv. =  9.09806e-011
+Min. Micro strain rate Inv. =  5.53546e-013
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.249745
+Max. strain rate Diff =   0.318271
+Max. Stress Diff      =   2.83424e-009
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   2.82121e-011
+Effective Viscosity    =   8.86144e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #3, Stress Invariant #2 = 50, Max. rel. diff. = 0.318271
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  1.439e+013
+Min. Micro Viscosity        =  1.97021e+011
+
+Max. Micro strain rate Inv. =  1.21266e-010
+Min. Micro strain rate Inv. =  7.378e-013
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.14545
+Max. strain rate Diff =   0.249745
+Max. Stress Diff      =   2.0125e-009
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   3.76033e-011
+Effective Viscosity    =   6.64835e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #4, Stress Invariant #2 = 50, Max. rel. diff. = 0.249745
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  1.22425e+013
+Min. Micro Viscosity        =  1.67617e+011
+
+Max. Micro strain rate Inv. =  1.50429e-010
+Min. Micro strain rate Inv. =  9.15225e-013
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.0902636
+Max. strain rate Diff =   0.193867
+Max. Stress Diff      =   1.43441e-009
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   4.66465e-011
+Effective Viscosity    =   5.35946e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #5, Stress Invariant #2 = 50, Max. rel. diff. = 0.193867
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  1.08449e+013
+Min. Micro Viscosity        =  1.48482e+011
+
+Max. Micro strain rate Inv. =  1.76818e-010
+Min. Micro strain rate Inv. =  1.07577e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.0587417
+Max. strain rate Diff =   0.149244
+Max. Stress Diff      =   1.02595e-009
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   5.48295e-011
+Effective Viscosity    =   4.55959e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #6, Stress Invariant #2 = 50, Max. rel. diff. = 0.149244
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  9.90243e+012
+Min. Micro Viscosity        =  1.35578e+011
+
+Max. Micro strain rate Inv. =  1.99605e-010
+Min. Micro strain rate Inv. =  1.2144e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.0396119
+Max. strain rate Diff =   0.114163
+Max. Stress Diff      =   7.36196e-010
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   6.18956e-011
+Effective Viscosity    =   4.03906e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #7, Stress Invariant #2 = 50, Max. rel. diff. = 0.114163
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  9.24974e+012
+Min. Micro Viscosity        =  1.26641e+011
+
+Max. Micro strain rate Inv. =  2.18603e-010
+Min. Micro strain rate Inv. =  1.32998e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.027433
+Max. strain rate Diff =   0.0869063
+Max. Stress Diff      =   5.29883e-010
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   6.77867e-011
+Effective Viscosity    =   3.68804e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #8, Stress Invariant #2 = 50, Max. rel. diff. = 0.0869063
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  8.78861e+012
+Min. Micro Viscosity        =  1.20328e+011
+
+Max. Micro strain rate Inv. =  2.34029e-010
+Min. Micro strain rate Inv. =  1.42383e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.0193814
+Max. strain rate Diff =   0.0659148
+Max. Stress Diff      =   3.82445e-010
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   7.25701e-011
+Effective Viscosity    =   3.44494e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #9, Stress Invariant #2 = 50, Max. rel. diff. = 0.0659148
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  8.45792e+012
+Min. Micro Viscosity        =  1.158e+011
+
+Max. Micro strain rate Inv. =  2.46309e-010
+Min. Micro strain rate Inv. =  1.49854e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.0138993
+Max. strain rate Diff =   0.049855
+Max. Stress Diff      =   2.76751e-010
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   7.63779e-011
+Effective Viscosity    =   3.2732e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #10, Stress Invariant #2 = 50, Max. rel. diff. = 0.049855
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  8.21809e+012
+Min. Micro Viscosity        =  1.12516e+011
+
+Max. Micro strain rate Inv. =  2.55939e-010
+Min. Micro strain rate Inv. =  1.55713e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.0100801
+Max. strain rate Diff =   0.0376293
+Max. Stress Diff      =   2.00765e-010
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   7.93643e-011
+Effective Viscosity    =   3.15003e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #11, Stress Invariant #2 = 50, Max. rel. diff. = 0.0376293
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  8.04269e+012
+Min. Micro Viscosity        =  1.10114e+011
+
+Max. Micro strain rate Inv. =  2.63409e-010
+Min. Micro strain rate Inv. =  1.60257e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.00737207
+Max. strain rate Diff =   0.0283568
+Max. Stress Diff      =   1.4595e-010
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.16805e-011
+Effective Viscosity    =   3.0607e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #12, Stress Invariant #2 = 50, Max. rel. diff. = 0.0283568
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.9136e+012
+Min. Micro Viscosity        =  1.08347e+011
+
+Max. Micro strain rate Inv. =  2.69153e-010
+Min. Micro strain rate Inv. =  1.63752e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.00542561
+Max. strain rate Diff =   0.0213439
+Max. Stress Diff      =   1.06339e-010
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.34619e-011
+Effective Viscosity    =   2.99538e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #13, Stress Invariant #2 = 50, Max. rel. diff. = 0.0213439
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.81815e+012
+Min. Micro Viscosity        =  1.0704e+011
+
+Max. Micro strain rate Inv. =  2.73544e-010
+Min. Micro strain rate Inv. =  1.66423e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.00401198
+Max. strain rate Diff =   0.016051
+Max. Stress Diff      =   7.76192e-011
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.48234e-011
+Effective Viscosity    =   2.9473e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #14, Stress Invariant #2 = 50, Max. rel. diff. = 0.016051
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.74731e+012
+Min. Micro Viscosity        =  1.0607e+011
+
+Max. Micro strain rate Inv. =  2.76884e-010
+Min. Micro strain rate Inv. =  1.68455e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.0029772
+Max. strain rate Diff =   0.0120626
+Max. Stress Diff      =   5.67428e-011
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.58591e-011
+Effective Viscosity    =   2.91175e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #15, Stress Invariant #2 = 50, Max. rel. diff. = 0.0120626
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.69461e+012
+Min. Micro Viscosity        =  1.05349e+011
+
+Max. Micro strain rate Inv. =  2.79416e-010
+Min. Micro strain rate Inv. =  1.69995e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.00221518
+Max. strain rate Diff =   0.00906065
+Max. Stress Diff      =   4.15759e-011
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.66442e-011
+Effective Viscosity    =   2.88536e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #16, Stress Invariant #2 = 50, Max. rel. diff. = 0.00906065
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.65531e+012
+Min. Micro Viscosity        =  1.04811e+011
+
+Max. Micro strain rate Inv. =  2.8133e-010
+Min. Micro strain rate Inv. =  1.7116e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.00165149
+Max. strain rate Diff =   0.00680321
+Max. Stress Diff      =   3.0505e-011
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.72377e-011
+Effective Viscosity    =   2.86573e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #17, Stress Invariant #2 = 50, Max. rel. diff. = 0.00680321
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.62598e+012
+Min. Micro Viscosity        =  1.04409e+011
+
+Max. Micro strain rate Inv. =  2.82774e-010
+Min. Micro strain rate Inv. =  1.72038e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.00123308
+Max. strain rate Diff =   0.00510676
+Max. Stress Diff      =   2.2402e-011
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.76854e-011
+Effective Viscosity    =   2.8511e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #18, Stress Invariant #2 = 50, Max. rel. diff. = 0.00510676
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.60405e+012
+Min. Micro Viscosity        =  1.04109e+011
+
+Max. Micro strain rate Inv. =  2.83861e-010
+Min. Micro strain rate Inv. =  1.727e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.000921708
+Max. strain rate Diff =   0.00383252
+Max. Stress Diff      =   1.64831e-011
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.80228e-011
+Effective Viscosity    =   2.84017e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #19, Stress Invariant #2 = 50, Max. rel. diff. = 0.00383252
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.58764e+012
+Min. Micro Viscosity        =  1.03884e+011
+
+Max. Micro strain rate Inv. =  2.8468e-010
+Min. Micro strain rate Inv. =  1.73198e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.000689541
+Max. strain rate Diff =   0.00287577
+Max. Stress Diff      =   1.21405e-011
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.82767e-011
+Effective Viscosity    =   2.83201e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #20, Stress Invariant #2 = 50, Max. rel. diff. = 0.00287577
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.57536e+012
+Min. Micro Viscosity        =  1.03716e+011
+
+Max. Micro strain rate Inv. =  2.85296e-010
+Min. Micro strain rate Inv. =  1.73573e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.000516179
+Max. strain rate Diff =   0.0021576
+Max. Stress Diff      =   8.9502e-012
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.84675e-011
+Effective Viscosity    =   2.8259e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #21, Stress Invariant #2 = 50, Max. rel. diff. = 0.0021576
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.56616e+012
+Min. Micro Viscosity        =  1.0359e+011
+
+Max. Micro strain rate Inv. =  2.85758e-010
+Min. Micro strain rate Inv. =  1.73854e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.000386586
+Max. strain rate Diff =   0.00161864
+Max. Stress Diff      =   6.60903e-012
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.8611e-011
+Effective Viscosity    =   2.82132e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #22, Stress Invariant #2 = 50, Max. rel. diff. = 0.00161864
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.55927e+012
+Min. Micro Viscosity        =  1.03496e+011
+
+Max. Micro strain rate Inv. =  2.86106e-010
+Min. Micro strain rate Inv. =  1.74065e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.000289632
+Max. strain rate Diff =   0.00121423
+Max. Stress Diff      =   4.87794e-012
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.87187e-011
+Effective Viscosity    =   2.8179e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #23, Stress Invariant #2 = 50, Max. rel. diff. = 0.00121423
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.55411e+012
+Min. Micro Viscosity        =  1.03425e+011
+
+Max. Micro strain rate Inv. =  2.86366e-010
+Min. Micro strain rate Inv. =  1.74224e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.000217051
+Max. strain rate Diff =   0.000910807
+Max. Stress Diff      =   3.61157e-012
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.87996e-011
+Effective Viscosity    =   2.81533e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #24, Stress Invariant #2 = 50, Max. rel. diff. = 0.000910807
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.55024e+012
+Min. Micro Viscosity        =  1.03372e+011
+
+Max. Micro strain rate Inv. =  2.86562e-010
+Min. Micro strain rate Inv. =  1.74343e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.000162691
+Max. strain rate Diff =   0.000683183
+Max. Stress Diff      =   2.669e-012
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.88603e-011
+Effective Viscosity    =   2.81341e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #25, Stress Invariant #2 = 50, Max. rel. diff. = 0.000683183
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.54733e+012
+Min. Micro Viscosity        =  1.03332e+011
+
+Max. Micro strain rate Inv. =  2.86709e-010
+Min. Micro strain rate Inv. =  1.74432e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   0.000121963
+Max. strain rate Diff =   0.000512431
+Max. Stress Diff      =   1.98997e-012
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.89058e-011
+Effective Viscosity    =   2.81196e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #26, Stress Invariant #2 = 50, Max. rel. diff. = 0.000512431
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.54516e+012
+Min. Micro Viscosity        =  1.03302e+011
+
+Max. Micro strain rate Inv. =  2.86819e-010
+Min. Micro strain rate Inv. =  1.74499e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   9.14417e-005
+Max. strain rate Diff =   0.000384348
+Max. Stress Diff      =   1.46594e-012
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.894e-011
+Effective Viscosity    =   2.81088e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #27, Stress Invariant #2 = 50, Max. rel. diff. = 0.000384348
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.54353e+012
+Min. Micro Viscosity        =  1.0328e+011
+
+Max. Micro strain rate Inv. =  2.86902e-010
+Min. Micro strain rate Inv. =  1.7455e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   6.8564e-005
+Max. strain rate Diff =   0.000288275
+Max. Stress Diff      =   1.09202e-012
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.89657e-011
+Effective Viscosity    =   2.81007e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #28, Stress Invariant #2 = 50, Max. rel. diff. = 0.000288275
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.5423e+012
+Min. Micro Viscosity        =  1.03263e+011
+
+Max. Micro strain rate Inv. =  2.86964e-010
+Min. Micro strain rate Inv. =  1.74588e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   5.14132e-005
+Max. strain rate Diff =   0.000216214
+Max. Stress Diff      =   8.10945e-013
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.89849e-011
+Effective Viscosity    =   2.80947e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #29, Stress Invariant #2 = 50, Max. rel. diff. = 0.000216214
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.54139e+012
+Min. Micro Viscosity        =  1.03251e+011
+
+Max. Micro strain rate Inv. =  2.87011e-010
+Min. Micro strain rate Inv. =  1.74616e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   3.85545e-005
+Max. strain rate Diff =   0.000162165
+Max. Stress Diff      =   5.96984e-013
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.89993e-011
+Effective Viscosity    =   2.80901e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #30, Stress Invariant #2 = 50, Max. rel. diff. = 0.000162165
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.5407e+012
+Min. Micro Viscosity        =  1.03241e+011
+
+Max. Micro strain rate Inv. =  2.87046e-010
+Min. Micro strain rate Inv. =  1.74637e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   2.89128e-005
+Max. strain rate Diff =   0.000121626
+Max. Stress Diff      =   4.40527e-013
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.90102e-011
+Effective Viscosity    =   2.80867e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #31, Stress Invariant #2 = 50, Max. rel. diff. = 0.000121626
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.54018e+012
+Min. Micro Viscosity        =  1.03234e+011
+
+Max. Micro strain rate Inv. =  2.87072e-010
+Min. Micro strain rate Inv. =  1.74653e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   2.16828e-005
+Max. strain rate Diff =   9.1221e-005
+Max. Stress Diff      =   3.32628e-013
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.90183e-011
+Effective Viscosity    =   2.80841e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #32, Stress Invariant #2 = 50, Max. rel. diff. = 9.1221e-005
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.5398e+012
+Min. Micro Viscosity        =  1.03229e+011
+
+Max. Micro strain rate Inv. =  2.87091e-010
+Min. Micro strain rate Inv. =  1.74665e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   1.62612e-005
+Max. strain rate Diff =   6.84165e-005
+Max. Stress Diff      =   2.55679e-013
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.90244e-011
+Effective Viscosity    =   2.80822e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #33, Stress Invariant #2 = 50, Max. rel. diff. = 6.84165e-005
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.5395e+012
+Min. Micro Viscosity        =  1.03225e+011
+
+Max. Micro strain rate Inv. =  2.87106e-010
+Min. Micro strain rate Inv. =  1.74674e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   1.21953e-005
+Max. strain rate Diff =   5.13128e-005
+Max. Stress Diff      =   1.90642e-013
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.90289e-011
+Effective Viscosity    =   2.80808e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #34, Stress Invariant #2 = 50, Max. rel. diff. = 5.13128e-005
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.53929e+012
+Min. Micro Viscosity        =  1.03222e+011
+
+Max. Micro strain rate Inv. =  2.87117e-010
+Min. Micro strain rate Inv. =  1.74681e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   9.14618e-006
+Max. strain rate Diff =   3.84849e-005
+Max. Stress Diff      =   1.27453e-013
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.90324e-011
+Effective Viscosity    =   2.80797e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #35, Stress Invariant #2 = 50, Max. rel. diff. = 3.84849e-005
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.53912e+012
+Min. Micro Viscosity        =  1.0322e+011
+
+Max. Micro strain rate Inv. =  2.87125e-010
+Min. Micro strain rate Inv. =  1.74686e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   6.85947e-006
+Max. strain rate Diff =   2.88638e-005
+Max. Stress Diff      =   1.0005e-013
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.90349e-011
+Effective Viscosity    =   2.80789e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #36, Stress Invariant #2 = 50, Max. rel. diff. = 2.88638e-005
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.539e+012
+Min. Micro Viscosity        =  1.03218e+011
+
+Max. Micro strain rate Inv. =  2.87132e-010
+Min. Micro strain rate Inv. =  1.74689e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   5.1445e-006
+Max. strain rate Diff =   2.16479e-005
+Max. Stress Diff      =   7.83834e-014
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.90369e-011
+Effective Viscosity    =   2.80783e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #37, Stress Invariant #2 = 50, Max. rel. diff. = 2.16479e-005
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.53891e+012
+Min. Micro Viscosity        =  1.03217e+011
+
+Max. Micro strain rate Inv. =  2.87136e-010
+Min. Micro strain rate Inv. =  1.74692e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   3.85832e-006
+Max. strain rate Diff =   1.6236e-005
+Max. Stress Diff      =   5.11727e-014
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.90383e-011
+Effective Viscosity    =   2.80778e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #38, Stress Invariant #2 = 50, Max. rel. diff. = 1.6236e-005
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.53884e+012
+Min. Micro Viscosity        =  1.03216e+011
+
+Max. Micro strain rate Inv. =  2.8714e-010
+Min. Micro strain rate Inv. =  1.74694e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   2.89371e-006
+Max. strain rate Diff =   1.2177e-005
+Max. Stress Diff      =   4.65115e-014
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.90394e-011
+Effective Viscosity    =   2.80775e+011
+----------------------------------------------------------------------------------------
+
+
+Stage #3, Iteration #39, Stress Invariant #2 = 50, Max. rel. diff. = 1.2177e-005
+----------------------------------------------------------------------------------------
+Max. Micro Viscosity        =  7.53879e+012
+Min. Micro Viscosity        =  1.03215e+011
+
+Max. Micro strain rate Inv. =  2.87142e-010
+Min. Micro strain rate Inv. =  1.74696e-012
+
+Max. Micro Stress Inv.      =  92.7146
+Min. Micro Stress Inv.      =  25.4393
+
+Max. Viscosity Diff   =   2.17027e-006
+Max. strain rate Diff =   9.13277e-006
+Max. Stress Diff      =   3.72438e-014
+
+Macro Stress Inv.      =   50
+Macro strain rate Inv. =   8.90402e-011
+Effective Viscosity    =   2.80772e+011
+----------------------------------------------------------------------------------------
+
+
+*** Converged in 39 iterations for stress invariant of 50                         
+Statistics: 
+  Max. rel. diff. in grain average viscosity     = 2.17027e-006
+  Max. rel. diff. in grain strain rate invariant = 9.13277e-006
+  Max. rel. diff. in grain stress invariant      = 3.72438e-014
+
+Beginning stress invariant # 3
+
+** --- Final stress reached. --- **
+----------------------------------------
+
+** --- Writing data to text files... --- **
+
+Computing principal stresses and strain rates
+
+---------------------------------------------
+Program execution time = 2.61667 minutes
+
+Analysis finished on Fri Feb 09 11:59:42 2018
+
