@@ -1,3 +1,2 @@
-## Ignores MATLAB temporary save files
 *.asv
-lib/*.asv
+*.eps

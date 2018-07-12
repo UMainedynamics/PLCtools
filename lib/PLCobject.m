@@ -2,11 +2,12 @@ classdef PLCobject
    properties
        microstructure
        parameter
-       results
-       datatable
        tempInterval
        stressStrainInterval
        kValue
+       results
+       results_gradient
+       datatable
        grains
        phases
        phasesnulled
@@ -18,10 +19,6 @@ classdef PLCobject
        fname_components
        theta
        coords
-       cut_line_v1
-       cut_line_v2
-       cutlinelength
-       cutline
        vx1
        vy1
        vx2
@@ -30,14 +27,17 @@ classdef PLCobject
        vycenter
        xc_x
        xc_y
-       vertex_distance
-       grad_vertex_distance
-       results_gradient
-       grad_x
-       grad_y
+       cut_line_v1
+       cut_line_v2
+       cutlinelength
+       cutline
        max_gradient
        max_gradient_row
        max_gradient_col
+       vertex_distance
+       grad_vertex_distance
+       grad_x
+       grad_y
        gradient_cutline
        gradline_row
        gradline_col
@@ -56,7 +56,7 @@ classdef PLCobject
         % 'kValue',10,'nullPhases',2);
             expectedParameters = {'Stress','Strain','Viscosity', ...
                 'PowerDissipationDensity'};
-            defaultResolution = 100;
+            defaultResolution = 150;
             defaultNullPhases = NaN;
             defaultBoundaryFitness = 1;
             p = inputParser;
@@ -127,11 +127,19 @@ classdef PLCobject
            %
            % EXAMPLE: obj = loadPLCdata(obj);
             microstress = dir([pwd '/*_micro_stress_griddata.mat']);
-            run_name_delimiter = '_';
-            obj.fname_components = strsplit(microstress.name, ...
-                run_name_delimiter);
-            obj.microstructure = strcat(strjoin( ...
-                obj.fname_components(1:end-3),'_'),'.mat');
+            if isempty(microstress) == 1
+                matfiles = dir([pwd '/*.mat']);
+                matnames = {matfiles.name};
+                namelength = cellfun('length',matnames);
+                [~,col] = find(namelength == min(namelength));
+                obj.microstructure = matnames{col};
+            else
+                run_name_delimiter = '_';
+                obj.fname_components = strsplit(microstress.name, ...
+                    run_name_delimiter);
+                obj.microstructure = strcat(strjoin( ...
+                    obj.fname_components(1:end-3),'_'),'.mat');
+            end
             obj.microstructure = load(obj.microstructure);
             obj.microstructure = obj.microstructure.ms;
             obj.results = obj.microstructure.(strcat('Micro',obj.parameter));
