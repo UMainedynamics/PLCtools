@@ -5,8 +5,8 @@ classdef PLCobject
        tempInterval
        stressStrainInterval
        kValue
-       results
-       results_gradient
+       results % The target data for the parameter of interest is stored here
+       results_gradient % The gradient of the target data for the parameter of interest is stored here
        datatable
        grains
        phases
@@ -47,13 +47,39 @@ classdef PLCobject
    methods
        function obj = PLCobject(parameter, tempInterval, ...
                stressStrainInterval, varargin)
-        % Requires as input arguments the parameter of interest 
-        % ('Stress' 'Strain' 'Viscosity' or 'PowerDissipationDensity'), 
-        % temperature interval, stress-strain interval, and k-value.
+        % The PLCobject class is used to create objects which are used to
+        % access and manipulate the data produced by the PLC toolbox. To
+        % create a new instance of the PLCobject class, the following input
+        % arguments are required:
         %
-        % EXAMPLE : loadPLCdata('parameter','stress', ...
-        % 'tempInterval',1,'stressStrainInterval',1, ...
-        % 'kValue',10,'nullPhases',2);
+        % The parameter of interest ('Stress' 'Strain' 'Viscosity' or 
+        % 'PowerDissipationDensity'), temperature interval, stress-strain 
+        % interval, and (if using 'Stress' or 'Strain' as the parameter
+        % of interest), the k-value.
+        %
+        % Optional parameters include 'resolution' , 'nullPhases' , and
+        % 'boundaryFitness'. The 'resolution' parameter can be used to
+        % change the resolution of the grid onto which the target data is
+        % interpolated (default = 150; increase for higher resolution). The
+        % 'nullPhases' parameter can be used to null the grains associated
+        % with a particular phase number. This can be useful if you are
+        % interested in calculating the results of only the matrix or only
+        % grains of a particular phase. The 'boundaryFitness' parameter
+        % refers to the aggressiveness or tightness of the fit of the
+        % nulled zone when using the 'nullPhases' option. The default
+        % boundaryFitness is 1, which is the most agressive / tightest fit,
+        % but this can be reduced to a number closer to 0 if the boundary
+        % resolution is too aggressive around complex geometries. For more
+        % information, type in 'doc boundary' in the MATLAB Command Window
+        % and look for the (s — Shrink factor) section.
+        %
+        % EXAMPLES (all examples use a temperature interval of 1 and a
+        % stress-strain interval of 2):
+        % 
+        %   EXAMPLE 1: myObject = PLCobject('Viscosity',1,2);
+        %   EXAMPLE 2: myObject = PLCobject('Stress',1,2,'kValue',10);
+        %   EXAMPLE 3: myObject = PLCobject('Strain',1,2,'kValue',5,...
+        %       'nullPhases',2,'boundaryFitness',0.85);
             expectedParameters = {'Stress','Strain','Viscosity', ...
                 'PowerDissipationDensity'};
             defaultResolution = 150;
@@ -401,7 +427,7 @@ classdef PLCobject
         %
         % EXAMPLE: 
         % myPlot = figure('units','normalized','Position',[0 0 1 1]);
-        % plc.plot(myPlot,obj.results);
+        % obj.plot(myPlot,obj.results);
            plothandle = PLCplot(fighandle,obj,plcData);
        end
        
@@ -415,8 +441,8 @@ classdef PLCobject
         %
         % EXAMPLE: 
         % mySubplot = figure('units','normalized','Position',[0 0 1 1]);
-        % parameterSubplot = plc.subplot(mySubplot,1,2,1,obj.results);
-        % gradientSubplot = plc.subplot(mySubplot,1,2,2,obj.results_gradient);
+        % parameterSubplot = obj.subplot(mySubplot,1,2,1,obj.results);
+        % gradientSubplot = obj.subplot(mySubplot,1,2,2,obj.results_gradient);
            plothandle = PLCsubplot(fighandle,m,n,p,obj,plcData);
        end
    end
